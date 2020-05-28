@@ -6,6 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="codebook-service" />
+        <module name="user-service" />
         <module name="api-gateway" />
         <module name="car-service" />
         <module name="eureka" />
@@ -14,14 +16,18 @@
     <bytecodeTargetLevel>
       <module name="api-gateway" target="11" />
       <module name="car-service" target="11" />
+      <module name="codebook-service" target="11" />
       <module name="eureka" target="11" />
+      <module name="user-service" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
       <module name="car-service" options="-parameters" />
+      <module name="codebook-service" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>

@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/api-gateway" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/car-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/codebook-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-service" charset="UTF-8" />
   </component>
 </project>
