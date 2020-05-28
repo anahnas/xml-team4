@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/car-service/car-service.iml" filepath="$PROJECT_DIR$/car-service/car-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/codebook-service/codebook-service.iml" filepath="$PROJECT_DIR$/codebook-service/codebook-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rent-service/rent-service.iml" filepath="$PROJECT_DIR$/rent-service/rent-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/xml-team4.iml" filepath="$PROJECT_DIR$/.idea/xml-team4.iml" />
     </modules>

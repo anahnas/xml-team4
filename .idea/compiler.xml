@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="codebook-service" />
-        <module name="user-service" />
-        <module name="api-gateway" />
-        <module name="car-service" />
+        <module name="rent-service" />
         <module name="eureka" />
+        <module name="codebook-service" />
+        <module name="api-gateway" />
+        <module name="user-service" />
+        <module name="car-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +19,7 @@
       <module name="car-service" target="11" />
       <module name="codebook-service" target="11" />
       <module name="eureka" target="11" />
+      <module name="rent-service" target="11" />
       <module name="user-service" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -27,6 +29,7 @@
       <module name="car-service" options="-parameters" />
       <module name="codebook-service" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="rent-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
