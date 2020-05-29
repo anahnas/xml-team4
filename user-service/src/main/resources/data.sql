@@ -1,1 +1,1 @@
-insert into user_table(username) values(gara)
+insert into user(dtype, username) values('basic_user','gara')
