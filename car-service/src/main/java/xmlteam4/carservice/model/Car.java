@@ -1,4 +1,4 @@
-package xml.team4.CarService.model;
+package xmlteam4.carservice.model;
 
 import lombok.Getter;
 import lombok.Setter;

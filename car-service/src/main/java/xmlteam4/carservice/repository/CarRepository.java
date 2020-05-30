@@ -1,7 +1,7 @@
-package xml.team4.CarService.repository;
+package xmlteam4.carservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import xml.team4.CarService.model.Car;
+import xmlteam4.carservice.model.Car;
 
 import java.util.ArrayList;
 import java.util.Optional;

@@ -1,13 +1,12 @@
-package xml.team4.CarService.controller;
+package xmlteam4.carservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import xml.team4.CarService.model.Car;
-import xml.team4.CarService.service.CarService;
 import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.model.Car;
+import xmlteam4.carservice.service.CarService;
 
 import java.util.ArrayList;
 

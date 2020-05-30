@@ -1,10 +1,12 @@
-package xml.team4.CarService.service;
+package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xml.team4.CarService.model.Car;
-import xml.team4.CarService.repository.CarRepository;
 import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.model.Car;
+import xmlteam4.carservice.repository.CarCalendarRepository;
+import xmlteam4.carservice.repository.CarRepository;
+import xmlteam4.carservice.repository.RentalRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +15,10 @@ import java.util.HashSet;
 public class CarService {
     @Autowired
     private CarRepository carRepository;
+    @Autowired
+    private RentalRepository rentalRepository;
+    @Autowired
+    private CarCalendarRepository carCalendarRepository;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -60,10 +66,19 @@ public class CarService {
         }
     }
 
-    public ArrayList<Car> searchCars(CarSearchForm car) {
+    public ArrayList<Car> searchCars(CarSearchForm carSearchForm) {
         try {
-            //return this.carRepository.findByCarModelIdAndAndCarClassIdAndAndFuelTypeIdAndAndTransmissionId(car.getCarModelId(), car.getCarClassId(), car.getFuelTypeId(), car.getTransmissionId());
-
+           /* ArrayList<Rental> rentals = (ArrayList<Rental>) this.rentalRepository.findAll();
+            ArrayList<Rental> freeRentals = (ArrayList<Rental>) this.rentalRepository.findFree(carSearchForm.getStartDate(), carSearchForm.getEndDate());*/
+            ArrayList<Car> retVal = new ArrayList<>();
+            /*ArrayList<CarCalendar> carCalendars = new ArrayList<>();
+            for(Rental r : freeRentals){
+                carCalendars.add(carCalendarRepository.getOne(r.getCarCalendarId()));
+            }
+            for(CarCalendar carCalendar : carCalendars){
+                retVal.add(carRepository.getOne(carCalendar.getCarId()));
+            }*/
+            return retVal;
         } catch (Exception e){
             e.printStackTrace();
             return null;
