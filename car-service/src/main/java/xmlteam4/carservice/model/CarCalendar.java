@@ -16,7 +16,7 @@ public class CarCalendar {
     private Long id;
     private Long carId;
     @ElementCollection(targetClass=Long.class)
-    private List<Rental> rentals;
+    private List<Long> rentalIds;
 
     public CarCalendar() {
     }

@@ -82,7 +82,9 @@ public class CarService {
                 carCalendars.add(carCalendarRepository.getOne(r.getCarCalendarId()));
             }
             for(CarCalendar carCalendar : carCalendars){
-                retVal.add(carRepository.getOne(carCalendar.getCarId()));
+                Car car =carRepository.getOne(carCalendar.getCarId());
+                if(car.getLocationId().equals(carSearchForm.getLocationId()))
+                    retVal.add(car);
             }
             return retVal;
         } catch (Exception e){
