@@ -13,6 +13,8 @@ public class User {
     private String password;
     @Column
     private RoleTypes roleType;
+    @Column
+    private boolean blocked = false;
 
     //private Set<Authority> authorities;
 
@@ -50,6 +52,10 @@ public class User {
     public void setRoleType(RoleTypes roleType) {
         this.roleType = roleType;
     }
+
+    public boolean isBlocked() { return blocked; }
+
+    public void setBlocked(boolean blocked) { this.blocked = blocked; }
 
     /*public Set<Authority> getAuthorities() {
         return authorities;
