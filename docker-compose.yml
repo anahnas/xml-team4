@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+
+  car-service:
+    build: ./car-service
+    image: xml/car-service:1.0.0
+    container_name: car-service
+    restart: on-failure
+    networks:
+      - xml
+    
+    ports:
+      - 8081:8081
+    environment:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+      DATABASE_DOMAIN: postgres
+      DATABASE_SCHEMA: postgres
+    depends_on: 
+      - postgres
+      - eureka
+
+  eureka:
+    build: ./eureka
+    image: xml/eureka:1.0.0
+    container_name: eureka
+    restart: on-failure
+    networks:
+      - xml
+    
+    ports:
+      - 8761:8761
+    environment:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+      DATABASE_DOMAIN: postgres
+      DATABASE_SCHEMA: postgres
+    depends_on: 
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    networks:
+      - xml
+
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+
+networks:
+  xml:
+    name: xml
+    driver: bridge
