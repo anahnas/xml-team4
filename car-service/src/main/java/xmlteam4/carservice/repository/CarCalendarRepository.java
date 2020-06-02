@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface CarCalendarRepository extends JpaRepository<CarCalendar, Long> {
     Optional<CarCalendar> findById(Long id);
     CarCalendar findByCarId(Long carId);
+    CarCalendar save(CarCalendar carCalendar);
 }

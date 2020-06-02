@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.model.Car;
+import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
 import java.util.ArrayList;
@@ -65,4 +66,14 @@ public class CarServiceController {
         else
             return new ResponseEntity<>("Error deleting car with id " + id +".", HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping(value="/notAvailable")
+    public ResponseEntity<?> notAvailable(@RequestBody Rental rental) {
+        Rental r = this.carService.blockCar(rental);
+        if( r == null )
+            return new ResponseEntity<>("Car blocking error!", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>( "Car is not available any more.", HttpStatus.OK);
+    }
+
 }

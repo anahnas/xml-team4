@@ -12,9 +12,7 @@ import xmlteam4.carservice.repository.RentalRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 @Service
 public class CarService {
@@ -92,4 +90,24 @@ public class CarService {
             return null;
         }
     }
+
+    public Rental blockCar(Rental rental) {
+
+        try {
+            Rental rent = this.rentalRepository.save(rental);
+            CarCalendar carCal = carCalendarRepository.getOne(rental.getCarCalendarId());
+            carCal.getRentalIds().add(rent.getId());
+
+            this.carCalendarRepository.save(carCal);
+
+            return rent;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
 }

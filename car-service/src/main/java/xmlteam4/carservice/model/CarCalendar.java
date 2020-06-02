@@ -20,4 +20,8 @@ public class CarCalendar {
 
     public CarCalendar() {
     }
+
+    public void setRentalIds(List<Long> rentalIds) {
+        this.rentalIds = rentalIds;
+    }
 }
