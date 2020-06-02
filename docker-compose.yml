@@ -8,7 +8,6 @@ services:
     restart: on-failure
     networks:
       - xml
-    
     ports:
       - 8081:8081
     environment:
@@ -16,27 +15,23 @@ services:
       DATABASE_PASSWORD: admin
       DATABASE_DOMAIN: postgres
       DATABASE_SCHEMA: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
     depends_on: 
       - postgres
-      - eureka
+      - eureka-service
 
-  eureka:
+  eureka-service:
     build: ./eureka
     image: xml/eureka:1.0.0
-    container_name: eureka
+    container_name: eureka-service
     restart: on-failure
     networks:
       - xml
-    
     ports:
       - 8761:8761
     environment:
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: admin
-      DATABASE_DOMAIN: postgres
-      DATABASE_SCHEMA: postgres
-    depends_on: 
-      - postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
+    
 
   postgres:
     image: postgres:latest
