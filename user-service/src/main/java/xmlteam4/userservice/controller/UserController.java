@@ -63,7 +63,15 @@ public class UserController {
         List<User> retVal = userService.findBasicUsers();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
-    
+
+    @GetMapping(value="/user/findOne/{id}")
+        public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User retVal = userService.findById(id);
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+
+
     @GetMapping(value="/user/all")
     public ResponseEntity<?> getAll() {
         List<User> retVal = userService.getAll();
