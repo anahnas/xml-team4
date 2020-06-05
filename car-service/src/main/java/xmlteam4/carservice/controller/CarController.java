@@ -12,7 +12,7 @@ import xmlteam4.carservice.service.CarService;
 import java.util.ArrayList;
 
 @RestController
-public class CarServiceController {
+public class CarController {
 
     @Autowired
     private CarService carService;
@@ -73,10 +73,11 @@ public class CarServiceController {
         if( r == null )
             return new ResponseEntity<>("Car blocking error!", HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>( "Car is not available any more.", HttpStatus.OK);
+        return new ResponseEntity<>("Car is not available any more.", HttpStatus.OK);
     }
 
-
-
-
+    @GetMapping(value = "/basicCars")
+    public ResponseEntity<?> basicCars() {
+        return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
+    }
 }

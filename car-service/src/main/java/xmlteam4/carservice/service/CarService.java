@@ -3,6 +3,7 @@ package xmlteam4.carservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.CarDTO;
+import xmlteam4.carservice.DTO.CarDTOBasic;
 import xmlteam4.carservice.DTO.CodebookDTO;
 import xmlteam4.carservice.DTO.ImageDTO;
 import xmlteam4.carservice.Forms.CarSearchForm;
@@ -29,9 +30,6 @@ public class CarService {
     private RentalRepository rentalRepository;
     @Autowired
     private CarCalendarRepository carCalendarRepository;
-
-    @Autowired
-    private CodebookFeignClient codebookFeignClient;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -121,8 +119,20 @@ public class CarService {
             e.printStackTrace();
             return null;
         }
-
     }
 
+    public List<CarDTOBasic> basicCars() {
+        List<CarDTOBasic> basicCars = new ArrayList<>();
+        try {
+            List<Car> cars = getAllCars();
+            for (Car car : cars) {
+                basicCars.add(new CarDTOBasic(car));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return basicCars;
+    }
 
 }

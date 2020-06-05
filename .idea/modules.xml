@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/rent-service/rent-service.iml" filepath="$PROJECT_DIR$/rent-service/rent-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-service/user-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/xml-team4.iml" filepath="$PROJECT_DIR$/.idea/xml-team4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-service/xml-user-service.iml" filepath="$PROJECT_DIR$/user-service/xml-user-service.iml" />
     </modules>
   </component>
 </project>
