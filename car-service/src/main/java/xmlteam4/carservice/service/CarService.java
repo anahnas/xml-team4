@@ -2,7 +2,10 @@ package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xmlteam4.carservice.DTO.CarDTO;
+import xmlteam4.carservice.DTO.CodebookDTO;
 import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.CarCalendar;
 import xmlteam4.carservice.model.Rental;
@@ -10,11 +13,7 @@ import xmlteam4.carservice.repository.CarCalendarRepository;
 import xmlteam4.carservice.repository.CarRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 @Service
 public class CarService {
@@ -24,6 +23,9 @@ public class CarService {
     private RentalRepository rentalRepository;
     @Autowired
     private CarCalendarRepository carCalendarRepository;
+
+    @Autowired
+    private CodebookFeignClient codebookFeignClient;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -92,4 +94,24 @@ public class CarService {
             return null;
         }
     }
+
+    public Rental blockCar(Rental rental) {
+
+        try {
+            Rental rent = this.rentalRepository.save(rental);
+            CarCalendar carCal = carCalendarRepository.getOne(rental.getCarCalendarId());
+            carCal.getRentalIds().add(rent.getId());
+
+            this.carCalendarRepository.save(carCal);
+
+            return rent;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
 }
