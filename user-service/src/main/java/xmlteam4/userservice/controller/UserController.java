@@ -12,6 +12,7 @@ import xmlteam4.userservice.service.MessageService;
 import xmlteam4.userservice.service.UserService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -55,6 +56,18 @@ public class UserController {
         userService.changeRoleType(u, roleType);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value="/user/findBasic")
+    public ResponseEntity<List<User>> getBasicUsers() {
+        List<User> retVal = userService.findBasicUsers();
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+    
+    @GetMapping(value="/user/all")
+    public ResponseEntity<?> getAll() {
+        List<User> retVal = userService.getAll();
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
     /////////////////////////////  ADMIN   /////////////////////////////

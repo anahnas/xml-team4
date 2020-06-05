@@ -1,8 +1,15 @@
 package xmlteam4.userservice.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
+@Table(name="user_table")
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -11,9 +18,12 @@ public class User {
     private String username;
     @Column
     private String password;
-    @Column
+
+    @Column(name="dtype", insertable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
     private RoleTypes roleType;
-    @Column
+
+    @Column(nullable = true)
     private boolean blocked = false;
 
     //private Set<Authority> authorities;
@@ -21,47 +31,5 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public RoleTypes getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(RoleTypes roleType) {
-        this.roleType = roleType;
-    }
-
-    public boolean isBlocked() { return blocked; }
-
-    public void setBlocked(boolean blocked) { this.blocked = blocked; }
-
-    /*public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }*/
 }
