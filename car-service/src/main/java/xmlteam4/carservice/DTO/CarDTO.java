@@ -10,6 +10,7 @@ import java.util.Set;
 public class CarDTO {
     private Long id;
     private Long carModelId;
+    private Long carBrandId;
     private Long fuelTypeId;
     private Long locationId;
     private Long transmissionId;
