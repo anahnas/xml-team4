@@ -8,6 +8,7 @@ import xmlteam4.carservice.model.Advertisement;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.Image;
 import xmlteam4.carservice.repository.AdvertisementRepository;
+import xmlteam4.carservice.repository.ImageRepository;
 import xmlteam4.carservice.service.AdvertisementService;
 import xmlteam4.carservice.service.CarService;
 
@@ -19,6 +20,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired
     private AdvertisementRepository advertisementRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private CodebookFeignClient codebookFeignClient;
@@ -33,16 +37,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return getAdDTOS(advertisementDTOS, advertisements);
     }
 
-    public Image addImage(ImageDTO imageDTO){
-        Image image = new Image();
-        image.setPath(imageDTO.getPath());
-
-        return image;
-    }
 
     @Override
     public Long newAdvertisement(NewAdvertisementDTO newAdvertisementDTO) {
         Car car = new Car();
+
+        Image image = new Image();
+        image.setPath(newAdvertisementDTO.getImagePath());
+        image = this.imageRepository.save(image);
+
+        car.setImageId(image.getId());
         car.setCarBrandId(newAdvertisementDTO.getCarBrandId());
         car.setCarModelId(newAdvertisementDTO.getCarModelId());
         car.setCarClassId(newAdvertisementDTO.getCarClassId());
@@ -58,6 +62,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         this.carService.addCar(car);
 
         Advertisement advertisement = new Advertisement();
+
         advertisement.setCar(car);
         advertisement.setAdvertiserId(newAdvertisementDTO.getAdvertiserId());
         advertisement.setStartDate(newAdvertisementDTO.getStartDate());
@@ -67,6 +72,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
         return advertisement.getId();
 
+    }
+
+    @Override
+    public List<Advertisement> findAdvertisersAds(Long advertiserId) {
+        return this.advertisementRepository.findAdsByAdvertiserId(advertiserId);
+    }
+
+    @Override
+    public int counter(Long id) {
+        return this.advertisementRepository.counter(id);
     }
 
     private List<AdvertisementDTO> getAdDTOS(List<AdvertisementDTO> advertisementDTOS, List<Advertisement> advertisements){
@@ -79,6 +94,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             advertisementDTO.setEndDate(advertisement.getEndDate());
 
             CarDTO carDTO = new CarDTO();
+            carDTO.setCarBrandDTO(codebookDTO.getCarBrandDTO());
             carDTO.setId(advertisement.getCar().getId());
             carDTO.setCarModelId(codebookDTO.getCarModelId());
             carDTO.setCarClassId(codebookDTO.getCarClassId());
@@ -93,6 +109,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             carDTO.setLimitedKms(advertisement.getCar().isLimitedKms());
             carDTO.setLocationId(advertisement.getCar().getLocationId());
             carDTO.setOwnerId(advertisement.getCar().getOwnerId());
+            carDTO.setImageId(advertisement.getCar().getImageId());
 
             advertisementDTO.setCarDTO(carDTO);
             advertisementDTOS.add(advertisementDTO);

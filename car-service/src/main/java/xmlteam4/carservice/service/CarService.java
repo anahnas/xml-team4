@@ -4,13 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.CarDTO;
 import xmlteam4.carservice.DTO.CodebookDTO;
+import xmlteam4.carservice.DTO.ImageDTO;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.CarCalendar;
+import xmlteam4.carservice.model.Image;
 import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.repository.CarCalendarRepository;
 import xmlteam4.carservice.repository.CarRepository;
+import xmlteam4.carservice.repository.ImageRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
 import java.util.*;
@@ -19,6 +22,9 @@ import java.util.*;
 public class CarService {
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
     @Autowired
     private RentalRepository rentalRepository;
     @Autowired
@@ -40,6 +46,11 @@ public class CarService {
 
     public Car addCar(Car car){
         return this.carRepository.save(car);
+    }
+
+    public Image addImage(Image image){
+
+        return this.imageRepository.save(image);
     }
 
     public Car editCar(Car carDTO){

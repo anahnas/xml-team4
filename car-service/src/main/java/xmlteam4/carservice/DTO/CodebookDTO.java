@@ -12,6 +12,7 @@ public class CodebookDTO {
     private Long carModelId;
     private Long fuelTypeId;
     private Long transmissionId;
+    private CarBrandDTO carBrandDTO;
 
     public CodebookDTO() {
     }

@@ -1,7 +1,7 @@
 package xmlteam4.carservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import xmlteam4.carservice.DTO.AdvertisementDTO;
+import org.springframework.data.jpa.repository.Query;
 import xmlteam4.carservice.model.Advertisement;
 
 import java.util.List;
@@ -14,4 +14,10 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     @Override
     Optional<Advertisement> findById(Long aLong);
+
+    @Query(value = "select a from Advertisement a where a.advertiserId = ?1 ")
+    List<Advertisement> findAdsByAdvertiserId(Long advertiserId);
+
+    @Query(value = "select count(a) from Advertisement a where a.advertiserId = ?1 ")
+    int counter(Long id);
 }

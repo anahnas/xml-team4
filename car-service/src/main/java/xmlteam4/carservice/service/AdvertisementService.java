@@ -10,4 +10,6 @@ public interface AdvertisementService {
 
     List<AdvertisementDTO> getAll();
     Long newAdvertisement(NewAdvertisementDTO newAdvertisementDTO);
+    List<Advertisement> findAdvertisersAds(Long advertiserId);
+    int counter(Long id);
 }

@@ -2,7 +2,9 @@ package xmlteam4.carservice.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import xmlteam4.carservice.model.Image;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @Setter
@@ -14,6 +16,8 @@ public class NewAdvertisementDTO {
     private Long carModelId;
     private Long fuelTypeId;
     private Long transmissionId;
+
+    private String imagePath;
 
     private boolean limitedKms;
     private Double limitKmsPerDay;

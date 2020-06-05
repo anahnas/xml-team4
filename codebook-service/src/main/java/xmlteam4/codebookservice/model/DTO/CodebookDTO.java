@@ -8,7 +8,7 @@ import xmlteam4.codebookservice.model.*;
 @Setter
 public class CodebookDTO {
 
-    //public CarBrandDTO carBrandDTO;
+    public CarBrandDTO carBrandDTO;
     public Long carBrandId;
     //public CarModel carModel;
     public Long carModelId;
