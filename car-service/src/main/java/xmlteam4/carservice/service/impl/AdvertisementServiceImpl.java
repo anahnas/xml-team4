@@ -94,8 +94,13 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             advertisementDTO.setEndDate(advertisement.getEndDate());
 
             CarDTO carDTO = new CarDTO();
+            carDTO.setCarModelDTO(codebookDTO.getCarModelDTO());
             carDTO.setCarBrandDTO(codebookDTO.getCarBrandDTO());
+            carDTO.setCarClassDTO(codebookDTO.getCarClassDTO());
+            carDTO.setFuelTypeDTO(codebookDTO.getFuelTypeDTO());
+            carDTO.setTransmissionDTO(codebookDTO.getTransmissionDTO());
             carDTO.setId(advertisement.getCar().getId());
+            carDTO.setCarBrandId(codebookDTO.getCarBrandId());
             carDTO.setCarModelId(codebookDTO.getCarModelId());
             carDTO.setCarClassId(codebookDTO.getCarClassId());
             carDTO.setFuelTypeId(codebookDTO.getFuelTypeId());

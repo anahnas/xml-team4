@@ -14,4 +14,7 @@ public interface TransmissionService {
     Transmission addTransmission(Transmission transmission);
 
     void deleteById(Long id);
+
+    Transmission findById(Long transmissionId);
+
 }
