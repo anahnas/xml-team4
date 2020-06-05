@@ -14,4 +14,6 @@ public interface CarBrandService {
     CarBrand addOne(CarBrand carBrand);
 
     void deleteById(Long id);
+
+    CarBrand findById(Long carBrandId);
 }

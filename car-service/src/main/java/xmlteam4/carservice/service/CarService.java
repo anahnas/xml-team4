@@ -2,7 +2,10 @@ package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xmlteam4.carservice.DTO.CarDTO;
+import xmlteam4.carservice.DTO.CodebookDTO;
 import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.CarCalendar;
 import xmlteam4.carservice.model.Rental;
@@ -10,8 +13,6 @@ import xmlteam4.carservice.repository.CarCalendarRepository;
 import xmlteam4.carservice.repository.CarRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -22,6 +23,9 @@ public class CarService {
     private RentalRepository rentalRepository;
     @Autowired
     private CarCalendarRepository carCalendarRepository;
+
+    @Autowired
+    private CodebookFeignClient codebookFeignClient;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -107,6 +111,51 @@ public class CarService {
             return null;
         }
 
+    }
+
+    /*public Long saveAdvertisement(NewAdvertisementDTO newAdvertisementDTO){
+        Car newCar = new Car();
+        newCar.setCarClassId(newAdvertisementDTO.getCarClassDTO().getId());
+        newCar.setAvailableChildSeats(newAdvertisementDTO.getAvailableChildSeats());
+        newCar.setKmage(newAdvertisementDTO.getKmage());
+
+        this.carRepository.save(newCar);
+
+
+        return newCar.getId();
+    }*/
+
+    public List<CarDTO> getAllAds() {
+        List<CarDTO> adsDTO = new ArrayList<>();
+
+        List<Car> allAds = this.carRepository.findAll();
+
+        return getAdsDTO(adsDTO, allAds);
+    }
+
+
+
+    private List<CarDTO> getAdsDTO(List<CarDTO> adsDTO, List<Car> allAds) {
+        for (Car advertisement : allAds) {
+
+            CodebookDTO codebookDTO = this.codebookFeignClient.getCodebook(advertisement.getCarBrandId(),
+                    advertisement.getCarModelId(), advertisement.getCarClassId(), advertisement.getFuelTypeId(),
+                    advertisement.getTransmissionId());
+
+            CarDTO carDTO = new CarDTO();
+            //carDTO.setCarModelDTO(codebookDTO.getCarModelDTO());
+            carDTO.setCarModelId(codebookDTO.getCarModelId());
+
+            /*carDTO.setFuelTypeDTO(codebookDTO.getFuelTypeDTO());
+            carDTO.setTransmissionDTO(codebookDTO.getTransmissionDTO());
+            carDTO.setCarBrandDTO(codebookDTO.getCarBrandDTO());
+            carDTO.setCarModelDTO(codebookDTO.getCarModelDTO());
+            carDTO.setCarClassDTO(codebookDTO.getCarClassDTO());*/
+
+            adsDTO.add(carDTO);
+        }
+
+        return adsDTO;
     }
 
 
