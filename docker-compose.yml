@@ -32,6 +32,78 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
     
+  api-gateway:
+    build: ./api-gateway
+    image: xml/api-gateway:1.0.0
+    container_name: api-gateway
+    restart: on-failure
+    networks:
+      - xml
+    ports:
+      - 8080:8080
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
+    depends_on: 
+      - eureka-service
+      
+  user-service:
+    build: ./user-service
+    image: xml/user-service:1.0.0
+    container_name: user-service
+    restart: on-failure
+    networks:
+      - xml
+    ports:
+      - 8085:8085
+    environment:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+      DATABASE_DOMAIN: postgres
+      DATABASE_SCHEMA: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
+    depends_on: 
+      - postgres
+      - eureka-service 
+      
+  codebook-service:
+    build: ./codebook-service
+    image: xml/codebook-service:1.0.0
+    container_name: codebook-service
+    restart: on-failure
+    networks:
+      - xml
+    ports:
+      - 8082:8082
+    environment:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+      DATABASE_DOMAIN: postgres
+      DATABASE_SCHEMA: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
+    depends_on: 
+      - postgres
+      - eureka-service      
+
+  rent-service:
+    build: ./rent-service
+    image: xml/rent-service:1.0.0
+    container_name: rent-service
+    restart: on-failure
+    networks:
+      - xml
+    ports:
+      - 8083:8083
+    environment:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+      DATABASE_DOMAIN: postgres
+      DATABASE_SCHEMA: postgres
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-service:8761/eureka/
+    depends_on: 
+      - postgres
+      - eureka-service      
+
+
 
   postgres:
     image: postgres:latest
