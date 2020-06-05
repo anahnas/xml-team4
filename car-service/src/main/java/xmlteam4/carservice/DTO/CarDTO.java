@@ -2,12 +2,14 @@ package xmlteam4.carservice.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import xmlteam4.carservice.model.Image;
 
 import java.util.Set;
 
 @Setter
 @Getter
 public class CarDTO {
+    private CarBrandDTO carBrandDTO;
     private Long id;
     private Long carModelId;
     private Long carBrandId;
@@ -24,7 +26,7 @@ public class CarDTO {
     private int availableChildSeats;
     private Set<Long> carRatingIds;
     private Long ownerId;
-    private String image;
+    private Long imageId;
     // private List<Image> images;
     private Set<Long> promotionIds;
 

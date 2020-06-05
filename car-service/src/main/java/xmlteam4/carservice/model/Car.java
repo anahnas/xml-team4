@@ -2,6 +2,7 @@ package xmlteam4.carservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import xmlteam4.carservice.DTO.CarBrandDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class Car {
     @ElementCollection(targetClass=Long.class)
     private Set<Long> carRatingIds;
     private Long ownerId;
-    private String image;
+    private Long imageId;
+    //private Image image;
     // private List<Image> images;
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;

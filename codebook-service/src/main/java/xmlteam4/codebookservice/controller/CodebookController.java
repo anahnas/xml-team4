@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import xmlteam4.codebookservice.model.CarBrand;
+import xmlteam4.codebookservice.model.DTO.CarBrandDTO;
 import xmlteam4.codebookservice.model.DTO.CodebookDTO;
 import xmlteam4.codebookservice.service.*;
 
@@ -19,7 +21,11 @@ public class CodebookController {
                                    @PathVariable("transmissionId") Long transmissionId){
         CodebookDTO codebookDTO = new CodebookDTO();
 
-        //CarBrand carBrand = this.carBrandService.findById(carBrandId);
+        CarBrand carBrand = this.carBrandService.findById(carBrandId);
+        CarBrandDTO carBrandDTO = new CarBrandDTO();
+        carBrandDTO.setId(carBrand.getId());
+        carBrandDTO.setName(carBrand.getName());
+
 
         codebookDTO.setCarBrandId(carBrandId);
         codebookDTO.setCarModelId(carModelId);
@@ -27,7 +33,7 @@ public class CodebookController {
         codebookDTO.setTransmissionId(transmissionId);
         codebookDTO.setFuelTypeId(fuelTypeId);
 
-        //codebookDTO.setCarBrand(carBrand);
+        codebookDTO.setCarBrandDTO(carBrandDTO);
         return codebookDTO;
 
     }

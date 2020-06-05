@@ -1,31 +1,27 @@
 package xmlteam4.carservice.model;
 
+import com.google.common.collect.Range;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@Table(name="slikica")
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "path")
+    @Column(name = "image_path", length = 5000)
+   //@Length(min = 0, max = 5000)
     private String path;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Car car;
 
     public Image() {
     }
 
-    public Image(Long id, String path, Car car) {
-        this.id = id;
-        this.path = path;
-        this.car = car;
-    }
 }
