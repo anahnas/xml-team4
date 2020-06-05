@@ -35,5 +35,10 @@ public class CarBrandServiceImpl implements CarBrandService {
         this.carBrandRepository.deleteById(id);
     }
 
+    @Override
+    public CarBrand findById(Long carBrandId) {
+        return this.carBrandRepository.getOne(carBrandId);
+    }
+
 
 }

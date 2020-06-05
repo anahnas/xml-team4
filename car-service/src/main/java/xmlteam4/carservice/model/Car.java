@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,6 +18,7 @@ public class Car {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private Long carModelId;
+    private Long carBrandId;
     private Long fuelTypeId;
     private Long locationId;
     private Long transmissionId;
@@ -27,16 +29,18 @@ public class Car {
     private Double limitKmsPerDay;
     private Double kmage;
     private boolean Waiver;
-    private Integer availableChildSeats;
+    private int availableChildSeats;
     @ElementCollection(targetClass=Long.class)
     private Set<Long> carRatingIds;
     private Long ownerId;
-    //private List<Image> images;
+    private String image;
+    // private List<Image> images;
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 
-    public Car(Long carModelId, Long fuelTypeId, Long transmissionId, Long carClassId, Double pricePerDay, Double pricePerKm, boolean limitedKms, Double limitKmsPerDay, Double kmage, boolean waiver, Integer availableChildSeats, Set<Long> carRatingIds, Long agentId, Set<Long> promotionIds) {
+    public Car(Long carBrandId, Long carModelId, Long fuelTypeId, Long transmissionId, Long carClassId, Double pricePerDay, Double pricePerKm, boolean limitedKms, Double limitKmsPerDay, Double kmage, boolean waiver, Integer availableChildSeats, Set<Long> carRatingIds, Long agentId, Set<Long> promotionIds) {
         this.carModelId = carModelId;
+        this.carBrandId = carBrandId;
         this.fuelTypeId = fuelTypeId;
         this.transmissionId = transmissionId;
         this.carClassId = carClassId;
