@@ -10,13 +10,13 @@ public class CodebookDTO {
 
     public CarBrandDTO carBrandDTO;
     public Long carBrandId;
-    //public CarModel carModel;
+    public CarModelDTO carModelDTO;
     public Long carModelId;
-    //public CarClass carClass;
+    public CarClassDTO carClassDTO;
     public Long carClassId;
-    //public Transmission transmission;
+    public TransmissionDTO transmissionDTO;
     public Long transmissionId;
-    //public FuelType fuelType;
+    public FuelTypeDTO fuelTypeDTO;
     public Long fuelTypeId;
 
 

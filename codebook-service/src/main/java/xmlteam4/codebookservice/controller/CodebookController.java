@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import xmlteam4.codebookservice.model.CarBrand;
-import xmlteam4.codebookservice.model.DTO.CarBrandDTO;
-import xmlteam4.codebookservice.model.DTO.CodebookDTO;
+import xmlteam4.codebookservice.model.*;
+import xmlteam4.codebookservice.model.DTO.*;
 import xmlteam4.codebookservice.service.*;
 
 @RestController
@@ -14,6 +13,19 @@ public class CodebookController {
 
     @Autowired
     private CarBrandService carBrandService;
+
+    @Autowired
+    private CarModelService carModelService;
+
+    @Autowired
+    private CarClassService carClassService;
+
+    @Autowired
+    private FuelTypeService fuelTypeService;
+
+    @Autowired
+    private TransmissionService transmissionService;
+
 
     @GetMapping(value="/getCodebook/{carBrandId}/{carModelId}/{carClassId}/{fuelTypeId}/{transmissionId}")
     public CodebookDTO getCodebook(@PathVariable("carBrandId") Long carBrandId, @PathVariable("carModelId") Long carModelId,
@@ -26,6 +38,25 @@ public class CodebookController {
         carBrandDTO.setId(carBrand.getId());
         carBrandDTO.setName(carBrand.getName());
 
+        CarModel carModel = this.carModelService.findById(carModelId);
+        CarModelDTO carModelDTO = new CarModelDTO();
+        carModelDTO.setId(carModel.getId());
+        carModelDTO.setName(carModel.getName());
+
+        CarClass carClass = this.carClassService.findById(carClassId);
+        CarClassDTO carClassDTO = new CarClassDTO();
+        carClassDTO.setId(carClass.getId());
+        carClassDTO.setCarClass(carClass.getCarClass());
+
+        FuelType fuelType = this.fuelTypeService.findById(fuelTypeId);
+        FuelTypeDTO fuelTypeDTO = new FuelTypeDTO();
+        fuelTypeDTO.setId(fuelType.getId());
+        fuelTypeDTO.setType(fuelType.getType());
+
+        Transmission transmission = this.transmissionService.findById(transmissionId);
+        TransmissionDTO transmissionDTO = new TransmissionDTO();
+        transmissionDTO.setId(transmission.getId());
+        transmissionDTO.setType(transmission.getType());
 
         codebookDTO.setCarBrandId(carBrandId);
         codebookDTO.setCarModelId(carModelId);
@@ -34,6 +65,10 @@ public class CodebookController {
         codebookDTO.setFuelTypeId(fuelTypeId);
 
         codebookDTO.setCarBrandDTO(carBrandDTO);
+        codebookDTO.setCarModelDTO(carModelDTO);
+        codebookDTO.setCarClassDTO(carClassDTO);
+        codebookDTO.setFuelTypeDTO(fuelTypeDTO);
+        codebookDTO.setTransmissionDTO(transmissionDTO);
         return codebookDTO;
 
     }

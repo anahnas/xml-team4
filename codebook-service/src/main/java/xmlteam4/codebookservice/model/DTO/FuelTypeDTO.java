@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CarBrandDTO {
-
+public class FuelTypeDTO {
     private Long id;
-    private String name;
+    private String type;
 }

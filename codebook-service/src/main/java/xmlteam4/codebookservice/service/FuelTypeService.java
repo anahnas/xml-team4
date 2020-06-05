@@ -14,4 +14,7 @@ public interface FuelTypeService {
     FuelType addFuelType(FuelType fuelType);
 
     void deleteById(Long id);
+
+    FuelType findById(Long fuelTypeId);
+
 }

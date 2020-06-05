@@ -36,5 +36,10 @@ public class CarModelServiceImpl implements CarModelService {
         this.carModelRepository.deleteById(id);
     }
 
+    @Override
+    public CarModel findById(Long carModelId) {
+        return this.carModelRepository.getOne(carModelId);
+    }
+
 
 }

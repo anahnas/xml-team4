@@ -1,12 +1,11 @@
-package xmlteam4.codebookservice.model.DTO;
+package xmlteam4.carservice.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class CarBrandDTO {
-
+@Setter
+public class CarModelDTO {
     private Long id;
     private String name;
 }

@@ -10,6 +10,10 @@ import java.util.Set;
 @Getter
 public class CarDTO {
     private CarBrandDTO carBrandDTO;
+    private CarModelDTO carModelDTO;
+    private CarClassDTO carClassDTO;
+    public TransmissionDTO transmissionDTO;
+    public FuelTypeDTO fuelTypeDTO;
     private Long id;
     private Long carModelId;
     private Long carBrandId;

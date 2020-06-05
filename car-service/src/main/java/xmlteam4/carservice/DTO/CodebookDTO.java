@@ -13,6 +13,10 @@ public class CodebookDTO {
     private Long fuelTypeId;
     private Long transmissionId;
     private CarBrandDTO carBrandDTO;
+    private CarModelDTO carModelDTO;
+    private CarClassDTO carClassDTO;
+    private FuelTypeDTO fuelTypeDTO;
+    private TransmissionDTO transmissionDTO;
 
     public CodebookDTO() {
     }

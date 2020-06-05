@@ -36,4 +36,9 @@ public class CarClassServiceImpl implements CarClassService {
         this.carClassRepository.deleteById(id);
 
     }
+
+    @Override
+    public CarClass findById(Long carClassId) {
+        return this.carClassRepository.getOne(carClassId);
+    }
 }
