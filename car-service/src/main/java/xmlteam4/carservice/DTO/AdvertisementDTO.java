@@ -14,6 +14,7 @@ import java.util.List;
 public class AdvertisementDTO {
     private Long id;
     private CarDTO carDTO;
+    private UserDTO userDTO;
     private Date startDate;
     private Date endDate;
 

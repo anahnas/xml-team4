@@ -38,5 +38,7 @@ public class NewAdvertisementDTO {
 
     private Double kmage;
 
+    private String roleType;
+
     public NewAdvertisementDTO() {
     }}

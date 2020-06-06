@@ -6,6 +6,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.userservice.model.BasicUser;
+import xmlteam4.userservice.model.DTO.UserDTO;
 import xmlteam4.userservice.model.Message;
 import xmlteam4.userservice.model.User;
 import xmlteam4.userservice.service.MessageService;
@@ -60,6 +61,7 @@ public class UserController {
 
     @GetMapping(value="/user/findBasic")
     public ResponseEntity<List<User>> getBasicUsers() {
+
         List<User> retVal = userService.findBasicUsers();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
@@ -68,6 +70,18 @@ public class UserController {
         public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         User retVal = userService.findById(id);
         return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getUser/{id}")
+    public UserDTO getUser(@PathVariable("id") Long id) {
+        UserDTO userDTO = new UserDTO();
+
+        User user = this.userService.findById(id);
+        userDTO.setId(id);
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setType(user.getRoleType().toString());
+        return userDTO;
     }
 
 

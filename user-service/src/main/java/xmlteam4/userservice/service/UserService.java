@@ -85,6 +85,7 @@ public class UserService {
         return this.userRepository.findBasicUsers();
     }
 
+
     ///////////////////  Admin  //////////////////////
 
     public User addNewUser(User u) {

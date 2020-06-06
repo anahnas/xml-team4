@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.AdvertisementDTO;
 import xmlteam4.carservice.DTO.CarDTO;
 import xmlteam4.carservice.DTO.NewAdvertisementDTO;
+import xmlteam4.carservice.DTO.UserDTO;
+import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.Advertisement;
 import xmlteam4.carservice.service.AdvertisementService;
 
@@ -18,6 +20,9 @@ public class AdvertisementController {
 
     @Autowired
     private AdvertisementService advertisementService;
+
+    @Autowired
+    private UserFeignClient userFeignClient;
 
     @GetMapping(value="/advertisement/all")
     public ResponseEntity<List<AdvertisementDTO>> getAll() {
@@ -32,14 +37,19 @@ public class AdvertisementController {
 
     @PostMapping(value="/advertisement/new")
     public ResponseEntity<Long> newAdvertisement(@RequestBody NewAdvertisementDTO newAdvertisementDTO) {
-        //provjeri po ulozi i counteru da li je user sa idijem i ulogom basic user dodao vise od 3 oglasa (imas counter)
-
             try {
-            Long advertisementId = this.advertisementService.newAdvertisement(newAdvertisementDTO);
-            return new ResponseEntity<>(advertisementId, HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                UserDTO userDTO = this.userFeignClient.getUser(newAdvertisementDTO.getAdvertiserId().toString());
+                if(userDTO.getType().equals("BASIC_USER")) {
+                    int counter = this.advertisementService.counter(newAdvertisementDTO.getAdvertiserId());
+                    if(counter >= 3) {
+                        return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+                    }
+                }
+                Long advertisementId = this.advertisementService.newAdvertisement(newAdvertisementDTO);
+                return new ResponseEntity<>(advertisementId, HttpStatus.CREATED);
+        }   catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         }
     }
