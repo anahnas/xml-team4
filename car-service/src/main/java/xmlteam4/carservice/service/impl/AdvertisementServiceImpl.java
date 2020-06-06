@@ -1,9 +1,11 @@
 package xmlteam4.carservice.service.impl;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.*;
 import xmlteam4.carservice.client.CodebookFeignClient;
+import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.Advertisement;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.Image;
@@ -26,6 +28,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired
     private CodebookFeignClient codebookFeignClient;
+
+    @Autowired
+    private UserFeignClient userFeignClient;
 
     @Autowired
     private CarService carService;
@@ -59,6 +64,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         car.setPricePerKm(newAdvertisementDTO.getPricePerKm());
         car.setLimitKmsPerDay(newAdvertisementDTO.getLimitKmsPerDay());
         car.setLimitedKms(newAdvertisementDTO.isLimitedKms());
+        car.setOwnerId(newAdvertisementDTO.getAdvertiserId());
         this.carService.addCar(car);
 
         Advertisement advertisement = new Advertisement();
@@ -67,6 +73,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         advertisement.setAdvertiserId(newAdvertisementDTO.getAdvertiserId());
         advertisement.setStartDate(newAdvertisementDTO.getStartDate());
         advertisement.setEndDate(newAdvertisementDTO.getEndDate());
+        advertisement.setAdvertiserId(newAdvertisementDTO.getAdvertiserId());
         this.advertisementRepository.save(advertisement);
         this.advertisementRepository.flush();
 
@@ -86,6 +93,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private List<AdvertisementDTO> getAdDTOS(List<AdvertisementDTO> advertisementDTOS, List<Advertisement> advertisements){
         for(Advertisement advertisement : advertisements) {
+            UserDTO userDTO = this.userFeignClient.getUser(advertisement.getAdvertiserId().toString());
 
             CodebookDTO codebookDTO = this.codebookFeignClient.getCodebook(advertisement.getCar().getCarBrandId(), advertisement.getCar().getCarModelId(), advertisement.getCar().getCarClassId(), advertisement.getCar().getFuelTypeId(), advertisement.getCar().getTransmissionId());
             AdvertisementDTO advertisementDTO = new AdvertisementDTO();
@@ -117,6 +125,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             carDTO.setImageId(advertisement.getCar().getImageId());
 
             advertisementDTO.setCarDTO(carDTO);
+            advertisementDTO.setUserDTO(userDTO);
             advertisementDTOS.add(advertisementDTO);
         }
         return advertisementDTOS;

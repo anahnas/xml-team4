@@ -1,11 +1,17 @@
 package xmlteam4.userservice.model;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("BASIC_USER")
 public class BasicUser extends User{
+    @Column(nullable = true)
     boolean isBlocked;
+    @Column(nullable = true)
     boolean canRent;
+    @Column(nullable = true)
     boolean canRate;
 
     public boolean isBlocked() {

@@ -73,6 +73,19 @@ public class UserService {
 
     }
 
+    public List<User> getAll() {
+        return this.userRepository.findAll();
+    }
+
+    public User findById(Long id) {
+        return this.userRepository.getOne(id);
+    }
+
+    public List<User> findBasicUsers() {
+        return this.userRepository.findBasicUsers();
+    }
+
+
     ///////////////////  Admin  //////////////////////
 
     public User addNewUser(User u) {
