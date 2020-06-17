@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("car")
-public class CarServiceController {
+public class CarController {
 
     @Autowired
     private CarService carService;
