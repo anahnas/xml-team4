@@ -3,10 +3,9 @@ package xmlteam4.carservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.Forms.CarSearchForm;
-import xmlteam4.carservice.model.Car;
-import xmlteam4.carservice.model.CarCalendar;
-import xmlteam4.carservice.model.Rental;
+import xmlteam4.carservice.model.*;
 import xmlteam4.carservice.repository.CarCalendarRepository;
+import xmlteam4.carservice.repository.CarRatingRepository;
 import xmlteam4.carservice.repository.CarRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
@@ -22,6 +21,8 @@ public class CarService {
     private RentalRepository rentalRepository;
     @Autowired
     private CarCalendarRepository carCalendarRepository;
+    @Autowired
+    private CarRatingRepository carRatingRepository;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -108,6 +109,5 @@ public class CarService {
         }
 
     }
-
 
 }

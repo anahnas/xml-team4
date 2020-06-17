@@ -1,29 +1,33 @@
 package xmlteam4.carservice.controller;
 
+import com.netflix.ribbon.proxy.annotation.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.model.Car;
+import xmlteam4.carservice.model.CarRating;
+import xmlteam4.carservice.model.RatingStatus;
 import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
 import java.util.ArrayList;
 
 @RestController
+@RequestMapping("car")
 public class CarServiceController {
 
     @Autowired
     private CarService carService;
 
-    @GetMapping(value="/cars/all")
+    @GetMapping
     public ResponseEntity<?> getAllCars(){
         ArrayList<Car> retVal = carService.getAllCars();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    @GetMapping(value="/cars/{id}")
+    @GetMapping(value="/{id}")
     public ResponseEntity<?> getCar(@PathVariable("id") Long id){
         Car retVal = carService.getCar(id);
         if(retVal != null)
@@ -32,7 +36,7 @@ public class CarServiceController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value="/car")
+    @PostMapping
     public ResponseEntity<?> addCar(@RequestBody Car car){
         Car retVal = this.carService.addCar(car);
         if(retVal != null)
@@ -41,7 +45,7 @@ public class CarServiceController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value="/car/search")
+    @PostMapping(value="/search")
     public ResponseEntity<?> searchCar(@RequestBody CarSearchForm carSearchForm){
         ArrayList<Car> retVal = this.carService.searchCars(carSearchForm);
         if(retVal != null)
@@ -50,7 +54,7 @@ public class CarServiceController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping(value="/car")
+    @PutMapping
     public ResponseEntity<?> editCar(@RequestBody Car car){
         Car retVal = this.carService.editCar(car);
         if(retVal != null)
@@ -59,7 +63,7 @@ public class CarServiceController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value="/cars/{id}")
+    @DeleteMapping(value="/{id}")
     public ResponseEntity<?> removeCar(@PathVariable("id") Long id){
         if(carService.removeCar(id))
             return new ResponseEntity<>("Deleted.", HttpStatus.OK);
