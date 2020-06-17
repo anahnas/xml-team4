@@ -7,51 +7,62 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import xmlteam4.rentservice.model.RentRequest;
+import xmlteam4.rentservice.forms.RentForm;
+import xmlteam4.rentservice.model.Bundle;
+import xmlteam4.rentservice.model.Rent;
 import xmlteam4.rentservice.service.RentService;
 
 import java.util.List;
 
-@RestController
+@RestController()
 public class RentController {
 
     @Autowired
     private RentService rentService;
 
-    @GetMapping(value = "/rent/getAll")
-    public ResponseEntity<List<RentRequest>> getAll() {
-
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAll() {
         try {
-            List<RentRequest> rentRequests = this.rentService.getAll();
-
-            return new ResponseEntity<>(rentRequests, HttpStatus.OK);
+            List<Rent> rents = this.rentService.getAll();
+            return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    @GetMapping(value = "/rent/getPaid")
-    public ResponseEntity<List<RentRequest>> getPaid() {
-
+    @GetMapping(value = "/paid")
+    public ResponseEntity<?> getPaid() {
         try {
-            List<RentRequest> rentRequests = this.rentService.getPaidRentReqs();
-
-            return new ResponseEntity<>(rentRequests, HttpStatus.OK);
+            List<Rent> rents = this.rentService.getPaidRents();
+            return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    @PostMapping(value = "/rent/create")
-    public ResponseEntity<?> createRentRequest(@RequestBody RentRequest rentRequest) {
+    @PostMapping(value = "/rents")
+    public ResponseEntity<?> postRents(@RequestBody List<RentForm> rentForms) {
         try {
-            this.rentService.createRentReq(rentRequest);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            List<Rent> rents = rentService.postRents(rentForms);
+            return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/bundle")
+    public ResponseEntity<?> postBundle(@RequestBody List<RentForm> rentForms) {
+        try {
+            Bundle bundle = rentService.postBundle(rentForms);
+            return new ResponseEntity<>(bundle, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -14,4 +14,7 @@ public interface CarClassService {
     CarClass addOne(CarClass carClass);
 
     void deleteById(Long id);
+
+    CarClass findById(Long carClassId);
+
 }

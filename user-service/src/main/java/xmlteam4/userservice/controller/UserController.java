@@ -6,12 +6,14 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.userservice.model.BasicUser;
+import xmlteam4.userservice.model.DTO.UserDTO;
 import xmlteam4.userservice.model.Message;
 import xmlteam4.userservice.model.User;
 import xmlteam4.userservice.service.MessageService;
 import xmlteam4.userservice.service.UserService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -55,6 +57,39 @@ public class UserController {
         userService.changeRoleType(u, roleType);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value="/user/findBasic")
+    public ResponseEntity<List<User>> getBasicUsers() {
+
+        List<User> retVal = userService.findBasicUsers();
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/user/findOne/{id}")
+        public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User retVal = userService.findById(id);
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getUser/{id}")
+    public UserDTO getUser(@PathVariable("id") Long id) {
+        UserDTO userDTO = new UserDTO();
+
+        User user = this.userService.findById(id);
+        userDTO.setId(id);
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setType(user.getRoleType().toString());
+        return userDTO;
+    }
+
+
+
+    @GetMapping(value="/user/all")
+    public ResponseEntity<?> getAll() {
+        List<User> retVal = userService.getAll();
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
     /////////////////////////////  ADMIN   /////////////////////////////

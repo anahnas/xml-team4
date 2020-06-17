@@ -2,18 +2,16 @@ package xmlteam4.rentservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import xmlteam4.rentservice.model.RentRequest;
+import xmlteam4.rentservice.model.Rent;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface RentRepository extends JpaRepository<RentRequest, Long> {
-    @Override
-    List<RentRequest> findAll();
+public interface RentRepository extends JpaRepository<Rent, Long> {
 
-    @Override
-    Optional<RentRequest> findById(Long id);
+    List<Rent> findAll();
+    Optional<Rent> findById(Long id);
 
     @Query(value = "SELECT * FROM rent_request r WHERE r.status = 'PAID'", nativeQuery = true)
-    List<RentRequest> getPaidRentReqs();
+    List<Rent> getPaidRents();
 }

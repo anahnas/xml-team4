@@ -37,4 +37,9 @@ public class FuelTypeServiceImpl implements FuelTypeService {
 
         this.fuelTypeRepository.deleteById(id);
     }
+
+    @Override
+    public FuelType findById(Long fuelTypeId) {
+        return this.fuelTypeRepository.getOne(fuelTypeId);
+    }
 }

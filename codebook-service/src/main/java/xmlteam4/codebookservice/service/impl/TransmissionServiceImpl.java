@@ -36,4 +36,9 @@ public class TransmissionServiceImpl implements TransmissionService {
         this.transmissionRepository.deleteById(id);
 
     }
+
+    @Override
+    public Transmission findById(Long transmissionId) {
+        return this.transmissionRepository.getOne(transmissionId);
+    }
 }
