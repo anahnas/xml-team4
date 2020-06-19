@@ -45,12 +45,15 @@ public class Rent {
         this.startDate = rentForm.getStartDate();
         this.endDate = rentForm.getEndDate();
         this.clientId = rentForm.getClientId();
+        this.status = RentStatus.PENDING;
     }
 
     public Rent(RentForm rentForm, Long bundleId) {
+        this.bundleId = bundleId;
         this.carId = rentForm.getCarId();
         this.startDate = rentForm.getStartDate();
         this.endDate = rentForm.getEndDate();
         this.clientId = rentForm.getClientId();
+        this.status = RentStatus.PENDING;
     }
 }

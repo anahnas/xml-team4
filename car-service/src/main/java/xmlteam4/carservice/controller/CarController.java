@@ -80,4 +80,8 @@ public class CarController {
         return new ResponseEntity<>( "Car is not available any more.", HttpStatus.OK);
     }
 
+    @GetMapping(value = "/basic")
+    public ResponseEntity<?> basicCars() {
+        return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
+    }
 }

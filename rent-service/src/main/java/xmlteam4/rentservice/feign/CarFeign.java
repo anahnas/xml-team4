@@ -8,6 +8,6 @@ import java.util.List;
 
 @FeignClient(name = "car-service")
 public interface CarFeign {
-    @GetMapping("/basicCars")
+    @GetMapping("/car/basic")
     List<CarDTOBasic> basicCars();
 }
