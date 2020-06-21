@@ -2,6 +2,7 @@ package xmlteam4.carservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import xmlteam4.carservice.DTO.CarRatingDTO;
 import xmlteam4.carservice.model.RatingStatus;
 
 import javax.persistence.*;
@@ -22,17 +23,23 @@ public class CarRating {
     public CarRating() {
     }
 
-    public CarRating(CarRating carRatingDTO) {
+    public CarRating(CarRatingDTO carRatingDTO) {
         System.out.println(carRatingDTO.getId() + " " + userId);
         this.id = carRatingDTO.getId();
         this.rating = carRatingDTO.getRating();
-        this.userId = userId;
-        this.carId = carId;
+        this.userId = carRatingDTO.getUserId();
+        this.carId = carRatingDTO.getCarId();
         this.comment = carRatingDTO.getComment();
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "CarRating{" +
+                "rating=" + rating +
+                ", userId=" + userId +
+                ", carId=" + carId +
+                ", comment='" + comment + '\'' +
+                ", ratingStatus=" + ratingStatus +
+                '}';
     }
 }
