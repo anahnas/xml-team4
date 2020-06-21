@@ -71,7 +71,8 @@ public class Car {
     private Long ownerId;
     @Column
     @XmlElement
-    private Long imageId;
+    private String imagePath;
+    //private Long imageId;
     //private Image image;
     // private List<Image> images;
     @Column

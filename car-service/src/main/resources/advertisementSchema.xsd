@@ -17,9 +17,7 @@
     <xs:complexType name="car">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
-            <xs:element name="carBrandId" type="xs:long" minOccurs="0"/>
             <xs:element name="carModelId" type="xs:long" minOccurs="0"/>
-            <xs:element name="carClassId" type="xs:long" minOccurs="0"/>
             <xs:element name="transmissionId" type="xs:long" minOccurs="0"/>
             <xs:element name="fuelTypeId" type="xs:long" minOccurs="0"/>
             <xs:element name="Waiver" type="xs:boolean" minOccurs="0"/>
@@ -30,7 +28,7 @@
             <xs:element name="pricePerKm" type="xs:double" minOccurs="0"/>
             <xs:element name="availableChildSeats" type="xs:int" minOccurs="0"/>
             <xs:element name="ownerId" type="xs:long" minOccurs="0"/>
-            <xs:element name="imageId" type="xs:long" minOccurs="0"/>
+            <xs:element name="imagePath" type="xs:string" minOccurs="0"/>
             <xs:element name="carRatingIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="promotionIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
