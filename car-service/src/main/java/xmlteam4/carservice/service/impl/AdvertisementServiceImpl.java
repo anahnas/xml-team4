@@ -51,10 +51,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         image.setPath(newAdvertisementDTO.getImagePath());
         image = this.imageRepository.save(image);
 
-        car.setImageId(image.getId());
-        car.setCarBrandId(newAdvertisementDTO.getCarBrandId());
+        // car.setImageId(image.getId());
+       // car.setCarBrandId(newAdvertisementDTO.getCarBrandId());
         car.setCarModelId(newAdvertisementDTO.getCarModelId());
-        car.setCarClassId(newAdvertisementDTO.getCarClassId());
+       // car.setCarClassId(newAdvertisementDTO.getCarClassId());
         car.setFuelTypeId(newAdvertisementDTO.getFuelTypeId());
         car.setTransmissionId(newAdvertisementDTO.getTransmissionId());
         car.setKmage(newAdvertisementDTO.getKmage());
@@ -122,7 +122,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             carDTO.setLimitedKms(advertisement.getCar().isLimitedKms());
             carDTO.setLocationId(advertisement.getCar().getLocationId());
             carDTO.setOwnerId(advertisement.getCar().getOwnerId());
-            carDTO.setImageId(advertisement.getCar().getImageId());
+            //carDTO.setImageId(advertisement.getCar().getImageId());
 
             advertisementDTO.setCarDTO(carDTO);
             advertisementDTO.setUserDTO(userDTO);

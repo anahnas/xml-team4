@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ad="http://localhost:8081/car-service-schema"
+           version="1.0"
+           targetNamespace="http://localhost:8081/car-service-schema">
+
+    <xs:complexType name="Advertisement">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="car" type="ad:car" minOccurs="0"/>
+            <xs:element name="advertiserId" type="xs:long" minOccurs="0"/>
+            <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+            <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="car">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="carModelId" type="xs:long" minOccurs="0"/>
+            <xs:element name="transmissionId" type="xs:long" minOccurs="0"/>
+            <xs:element name="fuelTypeId" type="xs:long" minOccurs="0"/>
+            <xs:element name="Waiver" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="limitedKms" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="limitedKmsPerDay" type="xs:double" minOccurs="0"/>
+            <xs:element name="kmage" type="xs:double" minOccurs="0"/>
+            <xs:element name="pricePerDay" type="xs:double" minOccurs="0"/>
+            <xs:element name="pricePerKm" type="xs:double" minOccurs="0"/>
+            <xs:element name="availableChildSeats" type="xs:int" minOccurs="0"/>
+            <xs:element name="ownerId" type="xs:long" minOccurs="0"/>
+            <xs:element name="imagePath" type="xs:string" minOccurs="0"/>
+            <xs:element name="carRatingIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="promotionIds" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="advertisementRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="advertiserId" type="xs:long" minOccurs="0"/>
+                <xs:element name="startDate" type="xs:string" minOccurs="0"/>
+                <xs:element name="endDate" type="xs:string" minOccurs="0"/>
+                <xs:element name="car" type="ad:car" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="advertisementResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="advertisementId"/>
+                <xs:element type="xs:long" name="carId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
