@@ -5,6 +5,7 @@ import lombok.Setter;
 import xmlteam4.carservice.DTO.CarBrandDTO;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,29 +15,67 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Car", namespace = "http://localhost:8081/car-service")
+@XmlRootElement(name = "carClass")
 public class Car {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @XmlElement
     private Long id;
+    @Column
+    @XmlElement
     private Long carModelId;
+    @Column
+    @XmlElement
     private Long carBrandId;
+    @Column
+    @XmlElement
     private Long fuelTypeId;
+    @Column
+    @XmlElement
     private Long locationId;
+    @Column
+    @XmlElement
     private Long transmissionId;
+    @Column
+    @XmlElement
     private Long carClassId;
+    @Column
+    @XmlElement
     private Double pricePerDay;
+    @Column
+    @XmlElement
     private Double pricePerKm;
+    @Column
+    @XmlElement
     private boolean limitedKms;
+    @Column
+    @XmlElement
     private Double limitKmsPerDay;
+    @Column
+    @XmlElement
     private Double kmage;
+    @Column
+    @XmlElement
     private boolean Waiver;
+    @Column
+    @XmlElement
     private int availableChildSeats;
+    @Column
+    //@XmlElement
     @ElementCollection(targetClass=Long.class)
     private Set<Long> carRatingIds;
+    @Column
+    @XmlElement
     private Long ownerId;
+    @Column
+    @XmlElement
     private Long imageId;
     //private Image image;
     // private List<Image> images;
+    @Column
+    // @XmlElement
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 

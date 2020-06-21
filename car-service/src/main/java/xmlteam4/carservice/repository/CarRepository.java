@@ -13,4 +13,7 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     Car findCarById(Long id);
     void deleteById(Long id);
     Car save(Car car);
+    Car findTopByOrderByIdDesc();
+
+
 }
