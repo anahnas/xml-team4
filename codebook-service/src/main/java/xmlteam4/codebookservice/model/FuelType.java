@@ -14,13 +14,13 @@ public class FuelType {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String type;
+    private String name;
 
     public FuelType() {
     }
 
-    public FuelType(String type) {
-        this.type = type;
+    public FuelType(String name) {
+        this.name = name;
     }
 
 

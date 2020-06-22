@@ -1,6 +1,8 @@
 package xmlteam4.codebookservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,18 +17,16 @@ public class CodebookController {
 
     @Autowired
     private CarBrandService carBrandService;
-
     @Autowired
     private CarModelService carModelService;
-
     @Autowired
     private CarClassService carClassService;
-
     @Autowired
     private FuelTypeService fuelTypeService;
-
     @Autowired
     private TransmissionService transmissionService;
+    @Autowired
+    private CodebookService codebookService;
 
 
     @GetMapping(value="/getCodebook/{carBrandId}/{carModelId}/{carClassId}/{fuelTypeId}/{transmissionId}")
@@ -48,17 +48,17 @@ public class CodebookController {
         CarClass carClass = this.carClassService.findById(carClassId);
         CarClassDTO carClassDTO = new CarClassDTO();
         carClassDTO.setId(carClass.getId());
-        carClassDTO.setCarClass(carClass.getCarClass());
+        carClassDTO.setCarClass(carClass.getName());
 
         FuelType fuelType = this.fuelTypeService.findById(fuelTypeId);
         FuelTypeDTO fuelTypeDTO = new FuelTypeDTO();
         fuelTypeDTO.setId(fuelType.getId());
-        fuelTypeDTO.setType(fuelType.getType());
+        fuelTypeDTO.setType(fuelType.getName());
 
         Transmission transmission = this.transmissionService.findById(transmissionId);
         TransmissionDTO transmissionDTO = new TransmissionDTO();
         transmissionDTO.setId(transmission.getId());
-        transmissionDTO.setType(transmission.getType());
+        transmissionDTO.setType(transmission.getName());
 
         codebookDTO.setCarBrandId(carBrandId);
         codebookDTO.setCarModelId(carModelId);
@@ -72,9 +72,17 @@ public class CodebookController {
         codebookDTO.setFuelTypeDTO(fuelTypeDTO);
         codebookDTO.setTransmissionDTO(transmissionDTO);
         return codebookDTO;
-
     }
 
+    @GetMapping()
+    public ResponseEntity<?> getCodebookDTO() {
+        try {
+            return new ResponseEntity<>(codebookService.getCodebook(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

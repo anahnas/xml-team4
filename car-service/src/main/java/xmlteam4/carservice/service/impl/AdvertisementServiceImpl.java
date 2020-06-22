@@ -1,6 +1,5 @@
 package xmlteam4.carservice.service.impl;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.*;
