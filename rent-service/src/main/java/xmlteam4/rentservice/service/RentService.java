@@ -7,6 +7,7 @@ import xmlteam4.rentservice.feign.CarFeign;
 import xmlteam4.rentservice.forms.RentForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
+import xmlteam4.rentservice.model.RentStatus;
 import xmlteam4.rentservice.repository.RentRepository;
 
 import java.util.ArrayList;
@@ -107,4 +108,17 @@ public class RentService {
 
         return bundle;
     }
+    public void acceptRentRequest(Long id) {
+        Rent rentRequest = this.rentRepository.findById(id).get();
+        rentRequest.setStatus(RentStatus.PAID);
+        this.rentRepository.save(rentRequest);
+    }
+
+    public void cancelRentRequest(Long id) {
+        Rent rentRequest = this.rentRepository.findById(id).get();
+        rentRequest.setStatus(RentStatus.CANCELED);
+        this.rentRepository.save(rentRequest);
+    }
+
+
 }

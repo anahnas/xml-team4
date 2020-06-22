@@ -3,10 +3,7 @@ package xmlteam4.rentservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xmlteam4.rentservice.forms.RentForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
@@ -14,7 +11,8 @@ import xmlteam4.rentservice.service.RentService;
 
 import java.util.List;
 
-@RestController()
+@RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class RentController {
 
     @Autowired
@@ -64,6 +62,26 @@ public class RentController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<?> cancelRentRequest(@PathVariable("id") Long id){
+        try {
+            this.rentService.cancelRentRequest(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value="/{id}")
+    public ResponseEntity<?> acceptRentRequest(@PathVariable("id") Long id){
+        try {
+            this.rentService.acceptRentRequest(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
