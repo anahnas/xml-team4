@@ -12,6 +12,7 @@ public class CarRatingDTO {
     private Long userId;
     private Long carId;
     private String comment;
+    private Enum rentingStatus;
 
     public CarRatingDTO() {
     }
@@ -24,6 +25,7 @@ public class CarRatingDTO {
         this.userId = carRating.getUserId();
         this.carId = carRating.getCarId();
         this.comment = carRating.getComment();
+        this.rentingStatus = carRating.getRatingStatus();
     }
 
     @Override
