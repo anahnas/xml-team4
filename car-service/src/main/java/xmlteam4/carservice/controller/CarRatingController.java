@@ -26,8 +26,8 @@ public class CarRatingController {
     @GetMapping
     public ResponseEntity<?> getAll(@RequestHeader ("carId") Long carId) {
         try {
-            List<CarRating> carRatings = this.carRatingService.getAll(carId);
-            List<CarRatingDTO> CarRatingDTOs = new ArrayList<>();
+            ArrayList<CarRating> carRatings = (ArrayList<CarRating>) this.carRatingService.getAll(carId);
+            ArrayList<CarRatingDTO> CarRatingDTOs = new ArrayList<>();
             for(CarRating carRating : carRatings){
                 CarRatingDTOs.add(new CarRatingDTO(carRating));
             }
