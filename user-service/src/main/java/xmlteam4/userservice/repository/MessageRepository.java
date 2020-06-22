@@ -12,6 +12,8 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     void deleteById(Long id);
     Message save(Message message);
 
+    ArrayList<Message> findMessageByReceiverId(Long receiverId);
+
     //@Query(value = "SELECT * FROM Message m WHERE m.receiverId =  ?1 and u.senderId = ?2" )
     ArrayList<Message> findMessageByReceiverIdAndSenderId(Long receiverId, Long senderId);
 }

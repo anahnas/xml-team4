@@ -24,9 +24,6 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -128,31 +125,6 @@ public class UserController {
             return new ResponseEntity<>("User can't be deleted.",HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    /////////////////////////////  Message  /////////////////////////////
-
-    @GetMapping(value="/messages/{receiverId}/{senderId}")
-    public ResponseEntity<?> getMessages(@PathVariable("receiverId") Long receiverId, @PathVariable("senderId") Long senderId){
-        ArrayList<Message> retVal = messageService.getMessages(receiverId, senderId);
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
-    }
-
-    @PostMapping(value="/message")
-    public ResponseEntity<?> sendMessage(@RequestBody Message message){
-        Message retVal = this.messageService.sendMessage(message);
-        if(retVal != null)
-            return new ResponseEntity<>(retVal, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @DeleteMapping(value="/messages/{id}")
-    public ResponseEntity<?> removeMessage(@PathVariable("id") Long id){
-        if(messageService.removeMessage(id))
-            return new ResponseEntity<>("Deleted.", HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Error deleting message with id " + id +".", HttpStatus.BAD_REQUEST);
     }
 
 }
