@@ -14,8 +14,9 @@ public class CarModel {
     private Long id;
     @Column
     private String name;
+
+//    @JoinColumn(name = "car_brand_id")
     @ManyToOne
-    @JoinColumn(name = "car_brand_id")
     private CarBrand carBrand;
     @ManyToOne
     private CarClass carClass;

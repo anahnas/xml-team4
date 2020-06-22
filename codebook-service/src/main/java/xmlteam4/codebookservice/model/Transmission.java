@@ -13,12 +13,12 @@ public class Transmission {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String type;
+    private String name;
 
     public Transmission() {
     }
 
-    public Transmission(String type) {
-        this.type = type;
+    public Transmission(String name) {
+        this.name = name;
     }
 }

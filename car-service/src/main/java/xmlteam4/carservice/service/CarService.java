@@ -10,8 +10,6 @@ import xmlteam4.carservice.repository.CarRatingRepository;
 import xmlteam4.carservice.repository.CarRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
