@@ -26,8 +26,8 @@ public class CarRatingController {
     @GetMapping
     public ResponseEntity<?> getAll(@RequestHeader ("carId") Long carId) {
         try {
-            List<CarRating> carRatings = this.carRatingService.getAll(carId);
-            List<CarRatingDTO> CarRatingDTOs = new ArrayList<>();
+            ArrayList<CarRating> carRatings = (ArrayList<CarRating>) this.carRatingService.getAll(carId);
+            ArrayList<CarRatingDTO> CarRatingDTOs = new ArrayList<>();
             for(CarRating carRating : carRatings){
                 CarRatingDTOs.add(new CarRatingDTO(carRating));
             }
@@ -41,8 +41,8 @@ public class CarRatingController {
     public ResponseEntity<?> getCarRating(@PathVariable Long id){
         try{
             CarRating retVal = carRatingService.getOne(id);
-        CarRatingDTO retValDTO = new CarRatingDTO(retVal);
-        return new ResponseEntity<>(retValDTO, HttpStatus.OK);
+            CarRatingDTO retValDTO = new CarRatingDTO(retVal);
+            return new ResponseEntity<>(retValDTO, HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>("Resource not found.", HttpStatus.NOT_FOUND);
@@ -59,8 +59,8 @@ public class CarRatingController {
 
     }
 
-    @PutMapping()
-    public ResponseEntity<?> approveComment(@RequestBody CarRating carRating) {
+    @PutMapping
+    public ResponseEntity<?> manageComment(@RequestBody CarRating carRating) {
         CarRating carR = this.carRatingService.approveComment(carRating);
         if( carRating == null )
             return new ResponseEntity<>("Comment error!", HttpStatus.BAD_REQUEST);

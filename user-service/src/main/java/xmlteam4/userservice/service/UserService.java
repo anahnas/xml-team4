@@ -89,7 +89,6 @@ public class UserService {
     ///////////////////  Admin  //////////////////////
 
     public User addNewUser(User u) {
-        System.out.println(u.getUsername() + " noviii");
         List<User> users = userRepository.findAll();
         for (User user : users) {
             if(user.getUsername().equals(u.getUsername())) {

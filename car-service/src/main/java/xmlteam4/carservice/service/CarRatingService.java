@@ -2,10 +2,12 @@ package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import xmlteam4.carservice.DTO.CarRatingDTO;
 import xmlteam4.carservice.model.CarRating;
 import xmlteam4.carservice.model.RatingStatus;
 import xmlteam4.carservice.repository.CarRatingRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,8 +25,21 @@ public class CarRatingService {
         return carRating;
     }
 
+
     public List<CarRating> getAll(Long carId) {
-        return this.carRatingRepository.findAllByCarId(carId);
+        if(carId != 0)
+            return this.carRatingRepository.findAllByCarId(carId);
+        else {
+            ArrayList<CarRating> carRatings = (ArrayList<CarRating>) this.carRatingRepository.findAll();
+            ArrayList<CarRating> newCarRating = new ArrayList<CarRating>();
+            for(CarRating cr: carRatings) {
+                if(cr.getRatingStatus().equals(RatingStatus.PENDING))
+                    newCarRating.add(cr);
+            }
+
+            return newCarRating;
+        }
+
     }
 
     public List<CarRating> getAllByUser(Long userId) {
