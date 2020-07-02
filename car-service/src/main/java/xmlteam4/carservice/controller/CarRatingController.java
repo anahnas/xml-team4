@@ -26,13 +26,11 @@ public class CarRatingController {
     @GetMapping
     public ResponseEntity<?> getAll(@RequestHeader ("carId") Long carId) {
         try {
-            ArrayList<CarRating> carRatings = (ArrayList<CarRating>) this.carRatingService.getAll(carId);
-            ArrayList<CarRatingDTO> CarRatingDTOs = new ArrayList<>();
-            for(CarRating carRating : carRatings){
-                CarRatingDTOs.add(new CarRatingDTO(carRating));
-            }
-            return new ResponseEntity<>(CarRatingDTOs, HttpStatus.OK);
+            ArrayList<CarRatingDTO> carRatingDTOs = this.carRatingService.getAllDTOs(carId);
+            return new ResponseEntity<>(carRatingDTOs, HttpStatus.OK);
         } catch (Exception e) {
+            System.out.println("je null");
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

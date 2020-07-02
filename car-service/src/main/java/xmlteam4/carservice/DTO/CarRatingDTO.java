@@ -12,6 +12,7 @@ public class CarRatingDTO {
     private Long userId;
     private Long carId;
     private String comment;
+    private String username;
     private Enum rentingStatus;
 
     public CarRatingDTO() {

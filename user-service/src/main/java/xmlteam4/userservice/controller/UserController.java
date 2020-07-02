@@ -72,7 +72,6 @@ public class UserController {
     @GetMapping(value="/getUser/{id}")
     public UserDTO getUser(@PathVariable("id") Long id) {
         UserDTO userDTO = new UserDTO();
-
         User user = this.userService.findById(id);
         userDTO.setId(id);
         userDTO.setUsername(user.getUsername());

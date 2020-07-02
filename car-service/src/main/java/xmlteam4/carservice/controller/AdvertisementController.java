@@ -38,7 +38,7 @@ public class AdvertisementController {
     @PostMapping(value="/advertisement/new")
     public ResponseEntity<Long> newAdvertisement(@RequestBody NewAdvertisementDTO newAdvertisementDTO) {
             try {
-                UserDTO userDTO = this.userFeignClient.getUser(newAdvertisementDTO.getAdvertiserId().toString());
+                UserDTO userDTO = this.userFeignClient.getUser(newAdvertisementDTO.getAdvertiserId());
                 if(userDTO.getType().equals("BASIC_USER")) {
                     int counter = this.advertisementService.counter(newAdvertisementDTO.getAdvertiserId());
                     if(counter >= 3) {

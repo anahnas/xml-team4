@@ -9,6 +9,6 @@ import xmlteam4.carservice.DTO.UserDTO;
 @FeignClient(name = "user-service")
 public interface UserFeignClient {
     @GetMapping("/getUser/{id}")
-    UserDTO getUser(@PathVariable("id") String id);
+    UserDTO getUser(@PathVariable("id") Long id);
 
 }

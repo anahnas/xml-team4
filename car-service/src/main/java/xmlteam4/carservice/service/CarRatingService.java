@@ -3,6 +3,8 @@ package xmlteam4.carservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.CarRatingDTO;
+import xmlteam4.carservice.DTO.UserDTO;
+import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.CarRating;
 import xmlteam4.carservice.model.RatingStatus;
 import xmlteam4.carservice.repository.CarRatingRepository;
@@ -16,6 +18,8 @@ public class CarRatingService {
     @Autowired
     private CarRatingRepository carRatingRepository;
 
+    @Autowired
+    UserFeignClient userFeignClient;
 
     public CarRating approveComment(CarRating carRating) {
 
@@ -24,7 +28,6 @@ public class CarRatingService {
 
         return carRating;
     }
-
 
     public List<CarRating> getAll(Long carId) {
         if(carId != 0)
@@ -39,6 +42,47 @@ public class CarRatingService {
 
             return newCarRating;
         }
+
+    }
+
+    public ArrayList<CarRatingDTO> getAllDTOs(Long carId) {
+        //if ratings from certain car are requested
+        if(carId != 0){
+            List<CarRating> carRatings = this.carRatingRepository.findAllByCarId(carId);
+            ArrayList<CarRatingDTO> carRatingDTOs = new ArrayList<>();
+            for(CarRating carRating : carRatings){
+                if(carRating.getRatingStatus() != RatingStatus.PENDING){
+                    CarRatingDTO carRatingDTO = new CarRatingDTO(carRating);
+                    System.out.println("nije pendinggg");
+                    System.out.println(carRating.getComment());
+                    try{
+                        UserDTO userDTO = this.userFeignClient.getUser(carRating.getUserId());
+                        carRatingDTO.setUsername(userDTO.getUsername());
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    System.out.println("username: " + carRatingDTO.getUsername());
+                    System.out.println("user id: " + carRating.getUserId().toString());
+                    carRatingDTOs.add(carRatingDTO);
+                }
+            }
+            return carRatingDTOs;
+        }
+        //or else get all pending
+        ArrayList<CarRating> carRatings = (ArrayList<CarRating>) this.carRatingRepository.findAll();
+        ArrayList<CarRatingDTO> carRatingDTOs = new ArrayList<>();
+        for(CarRating cr: carRatings) {
+            if(cr.getRatingStatus().equals(RatingStatus.PENDING)){
+                CarRatingDTO carRatingDTO = new CarRatingDTO(cr);
+                try{
+                    carRatingDTO.setUsername(this.userFeignClient.getUser(cr.getUserId()).getUsername());
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                carRatingDTOs.add(carRatingDTO);
+            }
+        }
+        return carRatingDTOs;
 
     }
 

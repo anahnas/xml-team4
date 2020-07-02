@@ -93,7 +93,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private List<AdvertisementDTO> getAdDTOS(List<AdvertisementDTO> advertisementDTOS, List<Advertisement> advertisements){
         for(Advertisement advertisement : advertisements) {
-            UserDTO userDTO = this.userFeignClient.getUser(advertisement.getAdvertiserId().toString());
+            UserDTO userDTO = this.userFeignClient.getUser(advertisement.getAdvertiserId());
 
             CodebookDTO codebookDTO = this.codebookFeignClient.getCodebook(advertisement.getCar().getCarBrandId(), advertisement.getCar().getCarModelId(), advertisement.getCar().getCarClassId(), advertisement.getCar().getFuelTypeId(), advertisement.getCar().getTransmissionId());
             AdvertisementDTO advertisementDTO = new AdvertisementDTO();

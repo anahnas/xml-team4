@@ -12,6 +12,6 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
     List<Rent> findAll();
     Optional<Rent> findById(Long id);
 
-    @Query(value = "SELECT * FROM rent_request r WHERE r.status = 'PAID'", nativeQuery = true)
+    @Query(value = "SELECT * FROM rent r WHERE r.status = 'PAID'", nativeQuery = true)
     List<Rent> getPaidRents();
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xmlteam4.userservice.client.RentFeignClient;
 import xmlteam4.userservice.model.DTO.MessageDTO;
 import xmlteam4.userservice.model.Message;
 import xmlteam4.userservice.service.MessageService;
@@ -32,6 +33,7 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity<?> sendMessage(@RequestHeader("senderId") Long senderId, @RequestBody MessageDTO messageDTO){
+
         MessageDTO retVal = this.messageService.sendMessage(messageDTO, senderId);
         if(retVal != null)
             return new ResponseEntity<>(retVal, HttpStatus.OK);

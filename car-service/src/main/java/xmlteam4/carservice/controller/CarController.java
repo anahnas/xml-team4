@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xmlteam4.carservice.DTO.TempCarDTO;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.CarRating;
@@ -24,13 +25,13 @@ public class CarController {
 
     @GetMapping
     public ResponseEntity<?> getAllCars(){
-        ArrayList<Car> retVal = carService.getAllCars();
+        ArrayList<TempCarDTO> retVal = carService.getAllCarDTOs();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
     @GetMapping(value="/{id}")
     public ResponseEntity<?> getCar(@PathVariable("id") Long id){
-        Car retVal = carService.getCar(id);
+        TempCarDTO retVal = carService.getCarDTO(id);
         if(retVal != null)
             return new ResponseEntity<>(retVal, HttpStatus.OK);
         else
@@ -84,5 +85,11 @@ public class CarController {
     @GetMapping(value = "/basic")
     public ResponseEntity<?> basicCars() {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/basic/{id}")
+    public ResponseEntity<?> basicCar(@PathVariable Long id) {
+        return new ResponseEntity<>(carService.basicCar(id), HttpStatus.OK);
     }
 }
