@@ -2,13 +2,9 @@ package xmlteam4.carservice.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import xmlteam4.carservice.DTO.CarBrandDTO;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -58,7 +54,7 @@ public class Car {
     private Double kmage;
     @Column
     @XmlElement
-    private boolean Waiver;
+    private boolean waiver;
     @Column
     @XmlElement
     private int availableChildSeats;
@@ -91,7 +87,7 @@ public class Car {
         this.limitedKms = limitedKms;
         this.limitKmsPerDay = limitKmsPerDay;
         this.kmage = kmage;
-        Waiver = waiver;
+        this.waiver = waiver;
         this.availableChildSeats = availableChildSeats;
         this.carRatingIds = carRatingIds;
         this.ownerId = agentId;

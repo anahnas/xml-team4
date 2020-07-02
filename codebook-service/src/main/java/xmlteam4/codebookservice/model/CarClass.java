@@ -13,12 +13,12 @@ public class CarClass {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column
-    private String carClass;
+    private String name;
 
     public CarClass() {
     }
 
-    public CarClass(String carClass) {
-        this.carClass = carClass;
+    public CarClass(String name) {
+        this.name = name;
     }
 }
