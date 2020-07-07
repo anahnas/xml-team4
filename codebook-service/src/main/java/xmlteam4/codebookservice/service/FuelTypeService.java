@@ -9,7 +9,7 @@ public interface FuelTypeService {
 
     List<FuelType> getAll();
 
-    Optional<FuelType> getFueltType(Long id);
+    Optional<FuelType> getFuelType(Long id);
 
     FuelType addFuelType(FuelType fuelType);
 

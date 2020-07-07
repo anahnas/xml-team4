@@ -17,6 +17,7 @@ public class CodebookDTO {
     private CarClassDTO carClassDTO;
     private FuelTypeDTO fuelTypeDTO;
     private TransmissionDTO transmissionDTO;
+    private LocationDTO locationDTO;
 
     public CodebookDTO() {
     }

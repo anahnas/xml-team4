@@ -2,6 +2,7 @@ package xmlteam4.codebookservice.model.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
+import xmlteam4.codebookservice.dto.LocationDTO;
 import xmlteam4.codebookservice.model.*;
 
 @Getter
@@ -13,11 +14,13 @@ public class CodebookDTO {
     public CarModelDTO carModelDTO;
     public Long carModelId;
     public CarClassDTO carClassDTO;
+    public LocationDTO locationDTO;
     public Long carClassId;
     public TransmissionDTO transmissionDTO;
     public Long transmissionId;
     public FuelTypeDTO fuelTypeDTO;
     public Long fuelTypeId;
+    public Long locationId;
 
 
     public CodebookDTO() {}

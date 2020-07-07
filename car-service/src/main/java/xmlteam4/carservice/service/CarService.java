@@ -2,11 +2,10 @@ package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xmlteam4.carservice.DTO.CarDTO;
 import xmlteam4.carservice.DTO.CarDTOBasic;
 import xmlteam4.carservice.DTO.CodebookDTO;
 import xmlteam4.carservice.DTO.TempCarDTO;
-import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.DTO.CarSearchDTO;
 import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.model.*;
 import xmlteam4.carservice.repository.CarCalendarRepository;
@@ -61,11 +60,12 @@ public class CarService {
         if(this.carRepository.findById(id).isPresent()) {
             Car car = this.carRepository.findById(id).get();
             CodebookDTO codebookDTO = this.codebookFeignClient.getCodebook(car.getCarBrandId(), car.getCarModelId(),
-                    car.getCarClassId(), car.getFuelTypeId(), car.getTransmissionId());
+                    car.getCarClassId(), car.getFuelTypeId(), car.getTransmissionId(), car.getLocationId());
             TempCarDTO tempCarDTO = new TempCarDTO();
             tempCarDTO.setId(car.getId());
             tempCarDTO.setCarBrandId(codebookDTO.getCarBrandDTO().getName());
             tempCarDTO.setCarModelId(codebookDTO.getCarModelDTO().getName());
+            tempCarDTO.setLocationId(codebookDTO.getLocationDTO().getName());
             tempCarDTO.setCarClassId(codebookDTO.getCarClassDTO().getCarClass());
             tempCarDTO.setFuelTypeId(codebookDTO.getFuelTypeDTO().getType());
             tempCarDTO.setTransmissionId(codebookDTO.getTransmissionDTO().getType());
@@ -116,22 +116,106 @@ public class CarService {
         }
     }
 
-    public ArrayList<Car> searchCars(CarSearchForm carSearchForm) {
-        try {
+    public ArrayList<TempCarDTO> searchCars(CarSearchDTO carSearchDTO) {
+        ArrayList<Car> toRemove = new ArrayList<>();
+        ArrayList<Car> allCars = this.carRepository.findAll();
 
-            ArrayList<Rental> rentals = (ArrayList<Rental>) this.rentalRepository.findAll();
-            ArrayList<Rental> freeRentals = (ArrayList<Rental>) this.rentalRepository.findFree(carSearchForm.getStartDate(), carSearchForm.getEndDate());
-            ArrayList<Car> retVal = new ArrayList<>();
-            ArrayList<CarCalendar> carCalendars = new ArrayList<>();
-            for(Rental r : freeRentals){
-                carCalendars.add(carCalendarRepository.getOne(r.getCarCalendarId()));
+        try {
+            System.out.println(carSearchDTO);
+
+            if(carSearchDTO.getLocationId() != null){
+                for(Car car: allCars) {
+                    if (!car.getLocationId().equals(carSearchDTO.getLocationId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
             }
-            for(CarCalendar carCalendar : carCalendars){
-                Car car =carRepository.getOne(carCalendar.getCarId());
-                if(car.getLocationId().equals(carSearchForm.getLocationId()))
-                    retVal.add(car);
+
+            if(carSearchDTO.getCarModelId() != null){
+                for(Car car: allCars) {
+                    if (!car.getCarModelId().equals(carSearchDTO.getCarModelId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
             }
-            return retVal;
+
+            if(carSearchDTO.getCarClassId() != null){
+                for(Car car: allCars) {
+                    if (!car.getCarClassId().equals(carSearchDTO.getCarClassId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.getFuelTypeId() != null){
+                for(Car car: allCars) {
+                    if (!car.getFuelTypeId().equals(carSearchDTO.getFuelTypeId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.getTransmissionId() != null){
+                for(Car car: allCars) {
+                    if (!car.getTransmissionId().equals(carSearchDTO.getTransmissionId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.getAvailableChildSeats() != 0){
+                for(Car car: allCars) {
+                    if (car.getAvailableChildSeats() != (carSearchDTO.getAvailableChildSeats()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.getKmage() != 0.0){
+                for(Car car: allCars) {
+                    if (!car.getKmage().equals(carSearchDTO.getKmage()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.getStartDate() != null && carSearchDTO.getEndDate() != null){
+                ArrayList<Rental> rentals = (ArrayList<Rental>) this.rentalRepository.findAll();
+                ArrayList<Rental> freeRentals = (ArrayList<Rental>) this.rentalRepository.findFree(carSearchDTO.getStartDate(), carSearchDTO.getEndDate());
+                ArrayList<CarCalendar> carCalendars = new ArrayList<>();
+                for(Rental r : freeRentals){
+                    carCalendars.add(carCalendarRepository.getOne(r.getCarCalendarId()));
+                }
+                ArrayList<Car> freeCars = new ArrayList<>();
+                for(CarCalendar carCalendar : carCalendars){
+                    Car car = carRepository.getOne(carCalendar.getCarId());
+                    freeCars.add(car);
+                }
+                for(Car car : allCars){
+                    if(!freeCars.contains(car.getId()))
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            ArrayList<TempCarDTO> carDTOs = new ArrayList<>();
+
+            for(Car car : allCars){
+                TempCarDTO tempCarDTO = this.setCarDTO(car.getId());
+                if(tempCarDTO != null)
+                    carDTOs.add(tempCarDTO);
+            }
+
+            return carDTOs;
+
         } catch (Exception e){
             e.printStackTrace();
             return null;

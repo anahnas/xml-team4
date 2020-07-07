@@ -23,5 +23,9 @@ insert into transmission(name) values('Manual');
 insert into transmission(name) values('Automatic');
 insert into transmission(name) values('Semiautomatic');
 
+insert into location(name) values('Novi Sad');
+insert into location(name) values('Beograd');
+insert into location(name) values('Nis');
+
 
 

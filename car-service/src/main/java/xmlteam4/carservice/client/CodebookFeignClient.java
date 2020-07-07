@@ -12,4 +12,9 @@ public interface CodebookFeignClient {
                             @PathVariable("carClassId") Long carClassId, @PathVariable("fuelTypeId") Long fuelTypeId,
                             @PathVariable("transmissionId") Long transmissionId);
 
+    @GetMapping("/getCodebook/{carBrandId}/{carModelId}/{carClassId}/{fuelTypeId}/{transmissionId}/{locationId}")
+    CodebookDTO getCodebook(@PathVariable("carBrandId") Long carBrandId, @PathVariable("carModelId") Long carModelId,
+                            @PathVariable("carClassId") Long carClassId, @PathVariable("fuelTypeId") Long fuelTypeId,
+                            @PathVariable("transmissionId") Long transmissionId, @PathVariable ("locationId") Long locationId);
+
 }

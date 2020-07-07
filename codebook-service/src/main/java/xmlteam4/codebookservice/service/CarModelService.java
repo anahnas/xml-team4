@@ -11,6 +11,8 @@ public interface CarModelService {
 
     Optional<CarModel> getOneCarModel(Long id);
 
+    List<CarModel> getByCarBrand(Long id);
+
     CarModel addOne(CarModel carModel);
 
     void deleteById(Long id);

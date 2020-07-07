@@ -13,4 +13,6 @@ public interface CarModelRepository extends JpaRepository<CarModel, Long> {
 
     @Override
     List<CarModel> findAll();
+
+    List<CarModel> findAllByCarBrandId(Long id);
 }

@@ -27,6 +27,11 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
+    public List<CarModel> getByCarBrand(Long id) {
+        return this.carModelRepository.findAllByCarBrandId(id);
+    }
+
+    @Override
     public CarModel addOne(CarModel carModel) {
         return this.carModelRepository.save(carModel);
     }
