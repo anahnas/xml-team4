@@ -3,17 +3,17 @@ package xmlteam4.codebookservice.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import xmlteam4.codebookservice.model.FuelType;
+import xmlteam4.codebookservice.model.CarBrand;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class FuelTypeDTO {
+public class CarBrandDTOh {
     private Long id;
     private String name;
 
-    public FuelTypeDTO(FuelType fuelType) {
-        this.id = fuelType.getId();
-        this.name = fuelType.getName();
+    public CarBrandDTOh(CarBrand carBrand) {
+        this.id = carBrand.getId();
+        this.name = carBrand.getName();
     }
 }

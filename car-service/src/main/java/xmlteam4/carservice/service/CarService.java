@@ -2,10 +2,8 @@ package xmlteam4.carservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xmlteam4.carservice.DTO.CarDTO;
-import xmlteam4.carservice.DTO.CarDTOBasic;
-import xmlteam4.carservice.DTO.CodebookDTO;
-import xmlteam4.carservice.DTO.TempCarDTO;
+import xmlteam4.carservice.DTO.*;
+import xmlteam4.carservice.DTO.codebookh.CodebookDTOh;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.model.*;
@@ -183,4 +181,26 @@ public class CarService {
     }
 
 
+    public List<CarDTOPretty> prettyCars(List<Long> ids) {
+        List<CarDTOPretty> cars = new ArrayList<>();
+        CodebookDTOh codebookDTOh;
+        try {
+            codebookDTOh = codebookFeignClient.getCodebookDTOh();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return cars;
+        }
+
+        for (Long id : ids) {
+            try {
+                Car car = carRepository.getOne(id);
+                cars.add(new CarDTOPretty(car, codebookDTOh));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return cars;
+            }
+        }
+
+        return cars;
+    }
 }

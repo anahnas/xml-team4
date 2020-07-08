@@ -8,11 +8,11 @@ import xmlteam4.codebookservice.model.Transmission;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TransmissionDTO {
+public class TransmissionDTOh {
     private Long id;
     private String name;
 
-    public TransmissionDTO(Transmission transmission) {
+    public TransmissionDTOh(Transmission transmission) {
         this.id = transmission.getId();
         this.name = transmission.getName();
     }
