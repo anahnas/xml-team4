@@ -49,8 +49,7 @@ public class RentController {
             return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -61,8 +60,7 @@ public class RentController {
             return new ResponseEntity<>(bundle, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

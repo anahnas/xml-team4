@@ -3,9 +3,11 @@ package xmlteam4.carservice.controller;
 import com.netflix.ribbon.proxy.annotation.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.TempCarDTO;
+import xmlteam4.carservice.Forms.CarPrettyForm;
 import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.CarRating;
@@ -14,6 +16,7 @@ import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("car")
@@ -87,9 +90,13 @@ public class CarController {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/basic/{id}")
     public ResponseEntity<?> basicCar(@PathVariable Long id) {
         return new ResponseEntity<>(carService.basicCar(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/pretty")
+    public ResponseEntity<?> prettyCars(@RequestParam String ids) {
+        return new ResponseEntity<>(carService.prettyCars(ids), HttpStatus.OK);
     }
 }

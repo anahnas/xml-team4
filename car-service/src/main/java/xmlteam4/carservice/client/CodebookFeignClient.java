@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import xmlteam4.carservice.DTO.CodebookDTO;
+import xmlteam4.carservice.DTO.codebookh.CodebookDTOh;
 
 @FeignClient(name = "codebook-service")
 public interface CodebookFeignClient {
@@ -12,4 +13,6 @@ public interface CodebookFeignClient {
                             @PathVariable("carClassId") Long carClassId, @PathVariable("fuelTypeId") Long fuelTypeId,
                             @PathVariable("transmissionId") Long transmissionId);
 
+    @GetMapping("")
+    CodebookDTOh getCodebookDTOh();
 }

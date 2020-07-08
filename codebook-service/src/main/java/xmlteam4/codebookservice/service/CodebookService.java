@@ -2,7 +2,7 @@ package xmlteam4.codebookservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xmlteam4.codebookservice.dto.CodebookDTO;
+import xmlteam4.codebookservice.dto.CodebookDTOh;
 import xmlteam4.codebookservice.model.*;
 
 import java.util.List;
@@ -20,13 +20,13 @@ public class CodebookService {
     @Autowired
     private TransmissionService transmissionService;
 
-    public CodebookDTO getCodebook() {
+    public CodebookDTOh getCodebook() {
         List<CarBrand> carBrands = carBrandService.getAll();
         List<CarClass> carClasses = carClassService.getAll();
         List<CarModel> carModels = carModelService.getAll();
         List<FuelType> fuelTypes = fuelTypeService.getAll();
         List<Transmission> transmissions = transmissionService.getAll();
 
-        return new CodebookDTO(carBrands, carClasses, carModels, fuelTypes, transmissions);
+        return new CodebookDTOh(carBrands, carClasses, carModels, fuelTypes, transmissions);
     }
 }
