@@ -21,4 +21,21 @@ public class CodebookDTO {
 
     public CodebookDTO() {
     }
+
+    @Override
+    public String toString() {
+        return "CodebookDTO{" +
+                "carBrandId=" + carBrandId +
+                ", carClassId=" + carClassId +
+                ", carModelId=" + carModelId +
+                ", fuelTypeId=" + fuelTypeId +
+                ", transmissionId=" + transmissionId +
+                ", carBrandDTO=" + carBrandDTO +
+                ", carModelDTO=" + carModelDTO +
+                ", carClassDTO=" + carClassDTO +
+                ", fuelTypeDTO=" + fuelTypeDTO +
+                ", transmissionDTO=" + transmissionDTO +
+                ", locationDTO=" + locationDTO +
+                '}';
+    }
 }

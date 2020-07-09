@@ -1,5 +1,6 @@
 package xmlteam4.carservice.service;
 
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.CarDTOBasic;
@@ -13,6 +14,14 @@ import xmlteam4.carservice.repository.CarRatingRepository;
 import xmlteam4.carservice.repository.CarRepository;
 import xmlteam4.carservice.repository.RentalRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -59,8 +68,10 @@ public class CarService {
     private TempCarDTO setCarDTO(Long id){
         if(this.carRepository.findById(id).isPresent()) {
             Car car = this.carRepository.findById(id).get();
+
             CodebookDTO codebookDTO = this.codebookFeignClient.getCodebook(car.getCarBrandId(), car.getCarModelId(),
                     car.getCarClassId(), car.getFuelTypeId(), car.getTransmissionId(), car.getLocationId());
+
             TempCarDTO tempCarDTO = new TempCarDTO();
             tempCarDTO.setId(car.getId());
             tempCarDTO.setCarBrandId(codebookDTO.getCarBrandDTO().getName());
@@ -76,6 +87,17 @@ public class CarService {
             tempCarDTO.setLimitedKms(car.isLimitedKms());
             tempCarDTO.setLimitKmsPerDay(car.getLimitKmsPerDay());
             tempCarDTO.setWaiver(car.isWaiver());
+            tempCarDTO.setImagePath(car.getImagePath());
+            Double rating = 0.0;
+            List<CarRating> carRatings = this.carRatingRepository.findAllByCarId(car.getId());
+            if (carRatings.size() != 0) {
+                for (CarRating carRating: carRatings) {
+                    rating += carRating.getRating();
+                }
+                rating = rating / carRatings.size();
+                tempCarDTO.setRating(rating);
+            }
+
             return tempCarDTO;
         }
         return null;
@@ -186,7 +208,41 @@ public class CarService {
                 toRemove = new ArrayList<>();
             }
 
+            if(carSearchDTO.isLimitedKms()){
+                for(Car car: allCars) {
+                    if (!car.isLimitedKms())
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            } else {
+                for(Car car: allCars) {
+                    if (car.isLimitedKms())
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
+            if(carSearchDTO.isWaiver()){
+                for(Car car: allCars) {
+                    if (!car.isWaiver())
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            } else {
+                for(Car car: allCars) {
+                    if (car.isWaiver())
+                        toRemove.add(car);
+                }
+                allCars.removeAll(toRemove);
+                toRemove = new ArrayList<>();
+            }
+
             if(carSearchDTO.getStartDate() != null && carSearchDTO.getEndDate() != null){
+                if(!validStartDate(carSearchDTO.getStartDate()))
+                    return null;
                 ArrayList<Rental> rentals = (ArrayList<Rental>) this.rentalRepository.findAll();
                 ArrayList<Rental> freeRentals = (ArrayList<Rental>) this.rentalRepository.findFree(carSearchDTO.getStartDate(), carSearchDTO.getEndDate());
                 ArrayList<CarCalendar> carCalendars = new ArrayList<>();
@@ -199,7 +255,7 @@ public class CarService {
                     freeCars.add(car);
                 }
                 for(Car car : allCars){
-                    if(!freeCars.contains(car.getId()))
+                    if(!freeCars.contains(car))
                         toRemove.add(car);
                 }
                 allCars.removeAll(toRemove);
@@ -220,6 +276,24 @@ public class CarService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private boolean validStartDate(Date startDate){
+        System.out.println(startDate);
+        Date today = new Date();
+        // converting java.util.Date to java.time.LocalDate Date today = new Date();
+        Instant instant = Instant.ofEpochMilli(today.getTime());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDate todayLocal = localDateTime.toLocalDate();
+
+        instant = Instant.ofEpochMilli(startDate.getTime());
+        localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDate startLocal = localDateTime.toLocalDate();
+        long days = ChronoUnit.DAYS.between(todayLocal, startLocal);
+        if(days < 2)
+            return false;
+        return true;
+
     }
 
     public Rental blockCar(Rental rental) {
@@ -266,5 +340,13 @@ public class CarService {
         return basicCar;
     }
 
+    public byte[] getCarImage(Long id) throws IOException {
+        String path = this.carRepository.getOne(id).getImagePath();
+
+        if(path != null)
+            return Files.readAllBytes(Paths.get(path));
+        else
+            return null;
+    }
 
 }

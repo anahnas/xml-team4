@@ -2,6 +2,7 @@ package xmlteam4.carservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.TempCarDTO;
@@ -10,6 +11,7 @@ import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
@@ -88,5 +90,10 @@ public class CarController {
     @GetMapping(value = "/basic/{id}")
     public ResponseEntity<?> basicCar(@PathVariable Long id) {
         return new ResponseEntity<>(carService.basicCar(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
+        return this.carService.getCarImage(id);
     }
 }

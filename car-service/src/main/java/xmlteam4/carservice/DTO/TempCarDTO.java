@@ -20,6 +20,8 @@ public class TempCarDTO {
     private Double kmage;
     private boolean waiver;
     private int availableChildSeats;
+    private Double rating;
+    private String imagePath;
 
     public TempCarDTO() {
     }
