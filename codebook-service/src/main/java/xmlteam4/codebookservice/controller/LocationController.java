@@ -4,32 +4,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xmlteam4.codebookservice.model.FuelType;
-import xmlteam4.codebookservice.service.FuelTypeService;
+import xmlteam4.codebookservice.model.Location;
+import xmlteam4.codebookservice.service.LocationService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("fuelType")
+@RequestMapping("location")
 @CrossOrigin(origins = "http://localhost:4200")
-public class FuelTypeController {
+public class LocationController {
     @Autowired
-    private FuelTypeService fuelTypeService;
+    private LocationService locationService;
 
     @GetMapping
-    public ResponseEntity<List<FuelType>> getAll() {
+    public ResponseEntity<List<Location>> getAll() {
         try {
-            List<FuelType> fuelTypes = this.fuelTypeService.getAll();
-            return new ResponseEntity<>(fuelTypes, HttpStatus.OK);
+            List<Location> locations = this.locationService.getAll();
+            return new ResponseEntity<>(locations, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping(value="/{id}")
-    public ResponseEntity<?> getFuelType(@PathVariable("id") Long id){
-        Optional<FuelType> retVal = fuelTypeService.getFuelType(id);
+    public ResponseEntity<?> getLocation(@PathVariable("id") Long id){
+        Optional<Location> retVal = locationService.getLocation(id);
         if(retVal != null)
             return new ResponseEntity<>(retVal, HttpStatus.OK);
         else
@@ -37,8 +37,8 @@ public class FuelTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addFuelType(@RequestBody FuelType fuelType){
-        FuelType retVal = this.fuelTypeService.addFuelType(fuelType);
+    public ResponseEntity<?> addLocation(@RequestBody Location location){
+        Location retVal = this.locationService.addLocation(location);
         if(retVal != null)
             return new ResponseEntity<>(retVal, HttpStatus.OK);
         else
@@ -46,12 +46,12 @@ public class FuelTypeController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteFuelType(@PathVariable("id") Long id) {
+    public ResponseEntity deleteLocation(@PathVariable("id") Long id) {
 
         try {
-            Optional<FuelType> fuelType = this.fuelTypeService.getFuelType(id);
-            if (fuelType != null) {
-                this.fuelTypeService.deleteById(id);
+            Optional<Location> location = this.locationService.getLocation(id);
+            if (location != null) {
+                this.locationService.deleteById(id);
             }
         } catch (NullPointerException e) {
             return ResponseEntity.notFound().build();

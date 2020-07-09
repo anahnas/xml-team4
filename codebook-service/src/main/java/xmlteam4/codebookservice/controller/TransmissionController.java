@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("transmission")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TransmissionController {
 
     @Autowired
     private TransmissionService transmissionService;
 
-    @GetMapping(value = "/transmission/getAll")
+    @GetMapping
     public ResponseEntity<List<Transmission>> getAll() {
         try {
             List<Transmission> transmission = this.transmissionService.getAll();
@@ -27,7 +28,7 @@ public class TransmissionController {
         }
     }
 
-    @GetMapping(value="/transmission/getOne/{id}")
+    @GetMapping(value="/{id}")
     public ResponseEntity<?> getTransmission(@PathVariable("id") Long id){
         Optional<Transmission> retVal = transmissionService.getTransmission(id);
         if(retVal != null)
@@ -36,7 +37,7 @@ public class TransmissionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value="/transmission/add")
+    @PostMapping
     public ResponseEntity<?> addTransmission(@RequestBody Transmission transmission){
         Transmission retVal = this.transmissionService.addTransmission(transmission);
         if(retVal != null)
@@ -45,7 +46,7 @@ public class TransmissionController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value = "/transmission/deleteOne/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteTransmission(@PathVariable("id") Long id) {
 
         try {

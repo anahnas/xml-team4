@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("carModel")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CarModelController {
     @Autowired
     private CarModelService carModelService;
 
-    @GetMapping(value = "/carModel/getAll")
+    @GetMapping
     public ResponseEntity<List<CarModel>> getAll() {
         try {
             List<CarModel> fuelTypes = this.carModelService.getAll();
@@ -26,7 +27,7 @@ public class CarModelController {
         }
     }
 
-    @GetMapping(value="/carModel/getOne/{id}")
+    @GetMapping(value="/{id}")
     public ResponseEntity<?> getOneCarModel(@PathVariable("id") Long id){
         Optional<CarModel> retVal = carModelService.getOneCarModel(id);
         if(retVal != null)
@@ -34,7 +35,18 @@ public class CarModelController {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @DeleteMapping(value = "/carModel/deleteOne/{id}")
+
+    @GetMapping(value="/carBrand/{id}")
+    public ResponseEntity<List<CarModel>> getByCarBrand(@PathVariable("id") Long id) {
+        try {
+            List<CarModel> fuelTypes = this.carModelService.getByCarBrand(id);
+            return new ResponseEntity<>(fuelTypes, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteCarModel(@PathVariable("id") Long id) {
 
         try {
@@ -49,7 +61,7 @@ public class CarModelController {
     }
 
 
-    @PostMapping(value="/carModel/add")
+    @PostMapping
     public ResponseEntity<?> addCarModel(@RequestBody CarModel carModel){
         CarModel retVal = this.carModelService.addOne(carModel);
         if(retVal != null)

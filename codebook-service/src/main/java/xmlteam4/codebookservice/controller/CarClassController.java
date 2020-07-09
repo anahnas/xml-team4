@@ -15,11 +15,12 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("carClass")
 public class CarClassController {
     @Autowired
     private CarClassService carClassService;
 
-    @GetMapping(value = "/carClass/getAll")
+    @GetMapping
     public ResponseEntity<List<CarClass>> getAll() {
         try {
             List<CarClass> fuelTypes = this.carClassService.getAll();
@@ -29,7 +30,7 @@ public class CarClassController {
         }
     }
 
-    @GetMapping(value="/carClass/getOne/{id}")
+    @GetMapping(value="/{id}")
     public ResponseEntity<?> getOneCarClass(@PathVariable("id") Long id){
         Optional<CarClass> retVal = carClassService.getOneCarClass(id);
         if(retVal != null)
@@ -37,7 +38,7 @@ public class CarClassController {
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @DeleteMapping(value = "/carClass/deleteOne/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteCarClass(@PathVariable("id") Long id) {
 
         try {
@@ -51,8 +52,7 @@ public class CarClassController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    @PostMapping(value="/carClass/add")
+    @PostMapping
     public ResponseEntity<?> addCarBrand(@RequestBody CarClass carClass){
         CarClass retVal = this.carClassService.addOne(carClass);
         if(retVal != null)

@@ -17,7 +17,25 @@ public class CodebookDTO {
     private CarClassDTO carClassDTO;
     private FuelTypeDTO fuelTypeDTO;
     private TransmissionDTO transmissionDTO;
+    private LocationDTO locationDTO;
 
     public CodebookDTO() {
+    }
+
+    @Override
+    public String toString() {
+        return "CodebookDTO{" +
+                "carBrandId=" + carBrandId +
+                ", carClassId=" + carClassId +
+                ", carModelId=" + carModelId +
+                ", fuelTypeId=" + fuelTypeId +
+                ", transmissionId=" + transmissionId +
+                ", carBrandDTO=" + carBrandDTO +
+                ", carModelDTO=" + carModelDTO +
+                ", carClassDTO=" + carClassDTO +
+                ", fuelTypeDTO=" + fuelTypeDTO +
+                ", transmissionDTO=" + transmissionDTO +
+                ", locationDTO=" + locationDTO +
+                '}';
     }
 }

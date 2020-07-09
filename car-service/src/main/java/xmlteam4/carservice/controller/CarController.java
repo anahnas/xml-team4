@@ -1,6 +1,5 @@
 package xmlteam4.carservice.controller;
 
-import com.netflix.ribbon.proxy.annotation.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.TempCarDTO;
 import xmlteam4.carservice.Forms.CarPrettyForm;
 import xmlteam4.carservice.Forms.CarSearchForm;
+import xmlteam4.carservice.DTO.CarSearchDTO;
 import xmlteam4.carservice.model.Car;
-import xmlteam4.carservice.model.CarRating;
-import xmlteam4.carservice.model.RatingStatus;
 import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +50,8 @@ public class CarController {
     }
 
     @PostMapping(value="/search")
-    public ResponseEntity<?> searchCar(@RequestBody CarSearchForm carSearchForm){
-        ArrayList<Car> retVal = this.carService.searchCars(carSearchForm);
+    public ResponseEntity<?> searchCar(@RequestBody CarSearchDTO carSearchDTO){
+        ArrayList<TempCarDTO> retVal = this.carService.searchCars(carSearchDTO);
         if(retVal != null)
             return new ResponseEntity<>(retVal, HttpStatus.OK);
         else
@@ -98,5 +97,10 @@ public class CarController {
     @GetMapping(value = "/pretty")
     public ResponseEntity<?> prettyCars(@RequestParam String ids) {
         return new ResponseEntity<>(carService.prettyCars(ids), HttpStatus.OK);
+    }
+    
+    @GetMapping(value="/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
+        return this.carService.getCarImage(id);
     }
 }
