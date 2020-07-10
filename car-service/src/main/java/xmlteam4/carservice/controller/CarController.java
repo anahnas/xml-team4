@@ -7,15 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.TempCarDTO;
 import xmlteam4.carservice.Forms.CarPrettyForm;
-import xmlteam4.carservice.Forms.CarSearchForm;
 import xmlteam4.carservice.DTO.CarSearchDTO;
 import xmlteam4.carservice.model.Car;
-import xmlteam4.carservice.model.Rental;
 import xmlteam4.carservice.service.CarService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("car")
@@ -75,15 +72,6 @@ public class CarController {
             return new ResponseEntity<>("Error deleting car with id " + id +".", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value="/notAvailable")
-    public ResponseEntity<?> notAvailable(@RequestBody Rental rental) {
-        Rental r = this.carService.blockCar(rental);
-        if( r == null )
-            return new ResponseEntity<>("Car blocking error!", HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>( "Car is not available any more.", HttpStatus.OK);
-    }
-
     @GetMapping(value = "/basic")
     public ResponseEntity<?> basicCars() {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
@@ -103,4 +91,6 @@ public class CarController {
     public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
         return this.carService.getCarImage(id);
     }
+
+
 }

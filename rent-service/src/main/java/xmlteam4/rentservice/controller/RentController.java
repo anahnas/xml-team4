@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xmlteam4.rentservice.dto.RentDateDTO;
 import xmlteam4.rentservice.forms.RentForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
@@ -18,7 +19,7 @@ public class RentController {
     @Autowired
     private RentService rentService;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/rents")
     public ResponseEntity<?> getAll() {
         try {
             List<Rent> rents = this.rentService.getAll();
@@ -37,6 +38,17 @@ public class RentController {
             return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/free")
+    public ResponseEntity<?> getFree(@RequestBody RentDateDTO rentDateDTO) {
+        try {
+            List<Long> freeCarIds = this.rentService.getFreeCarIds(rentDateDTO);
+            return new ResponseEntity<>(freeCarIds, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -82,5 +94,14 @@ public class RentController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping(value="/notAvailable")
+    public ResponseEntity<?> notAvailable(@RequestBody Rent rent) {
+        Rent r = this.rentService.blockCar(rent);
+        if( r == null )
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

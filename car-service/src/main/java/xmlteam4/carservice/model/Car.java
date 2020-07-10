@@ -68,11 +68,9 @@ public class Car {
     @Column
     @XmlElement
     private String imagePath;
-    //private Long imageId;
-    //private Image image;
-    // private List<Image> images;
+
     @Column
-    // @XmlElement
+
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 
