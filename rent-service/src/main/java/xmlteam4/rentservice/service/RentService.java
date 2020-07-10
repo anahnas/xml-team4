@@ -12,6 +12,7 @@ import xmlteam4.rentservice.model.Rent;
 import xmlteam4.rentservice.model.RentStatus;
 import xmlteam4.rentservice.repository.RentRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -82,7 +83,7 @@ public class RentService {
         return freeCarIds;
     }
 
-    public boolean carIsFree(RentDateDTO rentDateDTO, Long carId) {
+    private boolean carIsFree(RentDateDTO rentDateDTO, Long carId) {
 
         List<Rent> rents = this.rentRepository.findAllByCarId(carId);
 
@@ -180,7 +181,7 @@ public class RentService {
         this.rentRepository.save(rentRequest);
     }
 
-
+    @Transactional
     public Rent blockCar(Rent rent) {
 
         try {
@@ -245,6 +246,7 @@ public class RentService {
             this.rentRepository.deleteRentsWithIds(deleteListId);
 
             // Cuvanje novog rentala i njegovo dodavanje
+            rent.setStatus(RentStatus.RESERVED);
             return this.rentRepository.save(rent);
         } catch (Exception e){
             e.printStackTrace();

@@ -9,7 +9,7 @@ import xmlteam4.carservice.DTO.UserDTO;
 
 @FeignClient(name = "user-service")
 public interface UserFeignClient {
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     UserDTO getUser(@PathVariable("id") Long id);
     @GetMapping(value = "/authority/{id}")
     public ResponseEntity<?> checkAuthority(@PathVariable Long id);

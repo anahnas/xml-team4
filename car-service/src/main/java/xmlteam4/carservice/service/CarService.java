@@ -72,6 +72,7 @@ public class CarService {
 
             TempCarDTO tempCarDTO = new TempCarDTO();
             tempCarDTO.setId(car.getId());
+            tempCarDTO.setOwnerId(car.getOwnerId());
             tempCarDTO.setCarBrandId(codebookDTO.getCarBrandDTO().getName());
             tempCarDTO.setCarModelId(codebookDTO.getCarModelDTO().getName());
             tempCarDTO.setLocationId(codebookDTO.getLocationDTO().getName());
@@ -151,7 +152,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
-
+            System.out.println("after location " + allCars.size());
             if(carSearchDTO.getCarModelId() != null){
                 for(Car car: allCars) {
                     if (!car.getCarModelId().equals(carSearchDTO.getCarModelId()))
@@ -160,6 +161,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after getCarModelId " + allCars.size());
 
             if(carSearchDTO.getCarClassId() != null){
                 for(Car car: allCars) {
@@ -169,6 +171,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after getCarClassId " + allCars.size());
 
             if(carSearchDTO.getFuelTypeId() != null){
                 for(Car car: allCars) {
@@ -237,6 +240,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after waiver " + allCars.size());
 
             if(carSearchDTO.getStartDate() != null && carSearchDTO.getEndDate() != null){
                 if(!validStartDate(carSearchDTO.getStartDate()))
@@ -267,6 +271,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after date " + allCars.size());
 
             ArrayList<TempCarDTO> carDTOs = new ArrayList<>();
 

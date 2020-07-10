@@ -1,12 +1,12 @@
 insert into user_table(dtype, username, password, blocked, is_blocked, can_rate, can_rent) values
-('BASIC_USER','guest1@gmail.com','guest1', 0, 0, 0, 0);
+('BASIC_USER','guest1','guest1', 'false', 'false', 'false', 'false');
 insert into user_table(dtype, username, password, blocked, is_blocked, can_rate, can_rent) values
-('BASIC_USER','guest2@gmail.com','guest2', 0, 0, 0, 0);
+('BASIC_USER','guest2','guest2', 'false', 'false', 'false', 'false');
 insert into user_table(dtype, username, password, blocked, is_blocked, can_rate, can_rent) values
-('BASIC_USER','guest3@gmail.com','guest3', 0, 0, 0, 0);
+('BASIC_USER','guest3','guest3', 'false', 'false', 'false', 'false');
 
 insert into user_table(dtype, username, password, blocked) values
-('ADMIN','admin','admin', 0);
+('ADMIN','admin','admin', 'false');
 
 
 insert into message(receiver_id, sender_id, content, date_sent ) values(1, 2, 'Hello, how much is this car?', '2020-06-08 02:00:00');
