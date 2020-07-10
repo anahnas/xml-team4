@@ -77,10 +77,9 @@ public class UserController {
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setType(user.getRoleType().toString());
+        System.out.println("user - " + userDTO.getUsername());
         return userDTO;
     }
-
-
 
     @GetMapping
     public ResponseEntity<?> getAll() {
