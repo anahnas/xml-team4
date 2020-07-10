@@ -53,7 +53,6 @@ public class CarRatingService {
             for(CarRating carRating : carRatings){
                 if(carRating.getRatingStatus() != RatingStatus.PENDING){
                     CarRatingDTO carRatingDTO = new CarRatingDTO(carRating);
-                    System.out.println("nije pendinggg");
                     System.out.println(carRating.getComment());
                     try{
                         UserDTO userDTO = this.userFeignClient.getUser(carRating.getUserId());
