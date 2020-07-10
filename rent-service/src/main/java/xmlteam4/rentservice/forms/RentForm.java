@@ -13,5 +13,6 @@ public class RentForm {
     private Long carId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Boolean waiver;
     private Long clientId; //dolazice kroz header zakucaj sad u formi clientId, dodacemo samo kasnije
 }

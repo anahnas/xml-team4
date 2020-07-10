@@ -56,6 +56,8 @@ public class Car {
     @XmlElement
     private boolean waiver;
     @Column
+    private Double waiverPricePerDay;
+    @Column
     @XmlElement
     private int availableChildSeats;
     @Column
