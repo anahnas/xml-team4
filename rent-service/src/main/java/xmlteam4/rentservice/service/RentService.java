@@ -5,15 +5,13 @@ import org.springframework.stereotype.Service;
 import xmlteam4.rentservice.dto.CarDTOBasic;
 import xmlteam4.rentservice.feign.CarFeign;
 import xmlteam4.rentservice.forms.RentForm;
+import xmlteam4.rentservice.forms.ReviewForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
 import xmlteam4.rentservice.model.RentStatus;
 import xmlteam4.rentservice.repository.RentRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RentService {
@@ -45,6 +43,7 @@ public class RentService {
 
         List<CarDTOBasic> basicCars = carFeign.basicCars();
 
+        List<Rent> rents = new ArrayList<>();
         for (RentForm rentForm : rentForms) {
             if (rentForm.getCarId() == null || rentForm.getClientId() == null ||
                     rentForm.getStartDate() == null || rentForm.getEndDate() == null)
@@ -54,6 +53,7 @@ public class RentService {
             for (CarDTOBasic car : basicCars) {
                 if (car.getId().equals(rentForm.getCarId())) {
                     exists = true;
+                    rents.add(new Rent(rentForm, car));
                     break;
                 }
             }
@@ -62,9 +62,9 @@ public class RentService {
                 throw new Exception("A car with id:'" + rentForm.getCarId() + "' does not exist.");
         }
 
-        List<Rent> rents = new ArrayList<>();
-        for (RentForm rentForm : rentForms)
-            rents.add(rentRepository.save(new Rent(rentForm)));
+
+        for (Rent rent : rents)
+            rentRepository.save(rent);
 
         return rents;
     }
@@ -74,6 +74,7 @@ public class RentService {
             throw new Exception("No rent froms sent.");
 
         List<CarDTOBasic> basicCars = carFeign.basicCars();
+        List<Rent> rents = new ArrayList<>();
 
         Long ownerId = null;
         for (RentForm rentForm : rentForms) {
@@ -85,6 +86,7 @@ public class RentService {
             for (CarDTOBasic car : basicCars) {
                 if (car.getId().equals(rentForm.getCarId())) {      //a car with the selected id exists
                     exists = true;
+                    rents.add(new Rent(rentForm, car));
                     if (ownerId == null)
                         ownerId = car.getOwnerId();
                     else if (!ownerId.equals(car.getOwnerId()))
@@ -99,8 +101,9 @@ public class RentService {
 
         Bundle bundle = bundleService.save(new Bundle());
         Set<Long> rentIds = new HashSet<>();
-        for (RentForm rentForm : rentForms) {
-            Rent rent = rentRepository.save(new Rent(rentForm, bundle.getId()));
+        for (Rent rent : rents) {
+            rent.setBundleId(bundle.getId());
+            rentRepository.save(rent);
             rentIds.add(rent.getId());
         }
         bundle.setRentIds(rentIds);
@@ -108,6 +111,7 @@ public class RentService {
 
         return bundle;
     }
+
     public void acceptRentRequest(Long id) {
         Rent rentRequest = this.rentRepository.findById(id).get();
         rentRequest.setStatus(RentStatus.PAID);
@@ -121,4 +125,42 @@ public class RentService {
     }
 
 
+    public Rent updateAfterReview(ReviewForm reviewForm) throws Exception {
+        if (reviewForm.getPenaltyKms() <= 0)
+            throw new Exception("Penalty KMs must be grater than zero.");
+
+        Optional<Rent> optionalRent = this.rentRepository.findById(reviewForm.getRentId());
+        Rent rent;
+        if (optionalRent.isPresent())
+            rent = optionalRent.get();
+        else
+            throw new Exception("Rent with id: " + reviewForm.getRentId() + " does not exist.");
+
+        CarDTOBasic car;
+        try {
+            car = this.carFeign.basicCar(rent.getCarId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Error getting car info.");
+        }
+
+        rent.setPricePenalty(reviewForm.getPenaltyKms() * car.getPricePerKm());
+        rent.setStatus(RentStatus.EXCEEDED);
+        return this.rentRepository.save(rent);
+    }
+
+    public Rent pay(Long id) throws Exception {
+        Optional<Rent> optionalRent = this.rentRepository.findById(id);
+        Rent rent;
+        if (optionalRent.isPresent())
+            rent = optionalRent.get();
+        else
+            throw new Exception("Rent with id: " + id + " does not exist.");
+
+        if (!rent.getStatus().equals(RentStatus.EXCEEDED))
+            throw new Exception("There is nothing to pay");
+
+        rent.setStatus(RentStatus.PAID);
+        return this.rentRepository.save(rent);
+    }
 }

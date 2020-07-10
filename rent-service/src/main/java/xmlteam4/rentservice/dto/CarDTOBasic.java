@@ -10,4 +10,7 @@ import lombok.Setter;
 public class CarDTOBasic {
     private Long id;
     private Long ownerId;
+    private Double pricePerDay;
+    private Double pricePerKm;
+    private Double waiverPricePerDay;
 }
