@@ -53,6 +53,7 @@ public class MessageService {
         System.out.println("Receiver: " + messageDTO.getReceiver());
         Long receiverId = this.userRepository.findByUsername(messageDTO.getReceiver()).getId();
         if(userCanSend(senderId, receiverId)){
+            System.out.println("***MESS SERVICE senderId" + senderId);
             Message message = new Message();
             message.setContent(messageDTO.getContent());
             message.setSenderId(senderId);
@@ -61,6 +62,29 @@ public class MessageService {
             return this.message2MessageDTO(this.messageRepository.save(message));
         }
         return null;
+    }
+
+    public void sendAgentMessage(MessageDTO messageDTO){
+
+        Long receiverId = this.userRepository.findByUsername(messageDTO.getReceiver()).getId();
+        if(receiverId == null) {
+            System.out.println("MESS SERVICE RECEIVER ID" + receiverId);
+            return;
+        }
+        else {
+
+            System.out.println("MESS SERVICE ELSE" + receiverId);
+
+            Message message = new Message();
+            message.setContent(messageDTO.getContent());
+            message.setSenderId(Long.valueOf(messageDTO.getSender()));
+            message.setReceiverId(receiverId);
+            message.setDateSent(new Date());
+            System.out.println("MESS SERVICE poruka: " + message.toString());
+
+            this.messageRepository.save(message);
+        }
+
     }
 
     public boolean userCanSend(Long senderId, Long receiverId){
