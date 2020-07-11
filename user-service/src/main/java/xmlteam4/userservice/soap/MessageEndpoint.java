@@ -80,9 +80,7 @@ public class MessageEndpoint {
                 messageSoap.setReciever("5");
                 messageSoap.setSender(message.getSenderUsername());
                 try{
-                // messageSoap.setSender(userService.findById(message.getSenderId()).getUsername());
                     User novi = userService.findById(message.getSenderId());
-                    //System.out.println("NOVI" + novi.getUsername());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
