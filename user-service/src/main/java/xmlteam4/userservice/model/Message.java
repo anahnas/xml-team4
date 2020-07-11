@@ -30,5 +30,8 @@ public class Message {
     @Column
     @XmlElement
     private String content;
+    @Column
+    @XmlElement
+    private String senderUsername;
 
 }
