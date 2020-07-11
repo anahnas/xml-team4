@@ -8,6 +8,6 @@ import xmlteam4.rentservice.dto.UserDTO;
 @FeignClient(name="user-service")
 public interface UserFeign {
 
-    @GetMapping(value = "/getUser/{id}")
+    @GetMapping(value = "/user/{id}")
     UserDTO getUserById(@PathVariable("id") Long id);
 }

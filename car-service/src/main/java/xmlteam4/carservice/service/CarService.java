@@ -34,6 +34,8 @@ public class CarService {
     private CodebookFeignClient codebookFeignClient;
     @Autowired
     private RentFeignClient rentFeignClient;
+    @Autowired
+    private AdvertisementService advertisementService;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -363,4 +365,12 @@ public class CarService {
         return cars;
     }
 
+    public void setImagePath(String path, String originalFileName){
+        //getting the car id from uploaded image
+        String advertisementId = originalFileName.split("-")[0];
+        Advertisement advertisement = this.advertisementService.getAdvertisement(Long.valueOf(advertisementId));
+        Car car = this.carRepository.findById(advertisement.getCar().getId()).get();
+        car.setImagePath(path);
+        carRepository.save(car);
+    }
 }

@@ -33,8 +33,6 @@ public class CarRatingController {
             ArrayList<CarRatingDTO> carRatingDTOs = this.carRatingService.getAllDTOs(carId);
             return new ResponseEntity<>(carRatingDTOs, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("je null");
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
