@@ -42,11 +42,7 @@ public class UserService {
         User u = this.userRepository.findByUsername(user.getUsername());
         System.out.println(u.getUsername() + "    " + u.getPassword());
         if(u != null) {
-            System.out.println(u.getUsername() + " nasao   " );
-
             if(u.getPassword().equals(user.getPassword())) {
-                System.out.println(u.getUsername() + " nasao sifru  " );
-
                 return u;
             }
         }
