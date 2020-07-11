@@ -128,7 +128,8 @@ public class CodebookController {
         codebookDTO.setLocationDTO(locationDTO);
         return codebookDTO;
     }
-    @GetMapping()
+
+    @GetMapping
     public ResponseEntity<?> getCodebookDTO() {
         try {
             return new ResponseEntity<>(codebookService.getCodebook(), HttpStatus.OK);
@@ -137,6 +138,5 @@ public class CodebookController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

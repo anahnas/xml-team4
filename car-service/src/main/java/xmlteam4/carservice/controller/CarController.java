@@ -27,6 +27,7 @@ public class CarController {
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
+
     @GetMapping(value="/{id}")
     public ResponseEntity<?> getCar(@PathVariable("id") Long id){
         TempCarDTO retVal = carService.getCarDTO(id);
@@ -76,6 +77,11 @@ public class CarController {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "basic/user/{id}")
+    public ResponseEntity<?> getAllCarsByOwner(@PathVariable Long id){
+        return new ResponseEntity<>(carService.basicCarsByOwner(id), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/basic/{id}")
     public ResponseEntity<?> basicCar(@PathVariable Long id) {
         return new ResponseEntity<>(carService.basicCar(id), HttpStatus.OK);
@@ -85,10 +91,20 @@ public class CarController {
     public ResponseEntity<?> prettyCars(@RequestParam String ids) {
         return new ResponseEntity<>(carService.prettyCars(ids), HttpStatus.OK);
     }
-    
+
     @GetMapping(value="/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
         return this.carService.getCarImage(id);
+    }
+
+    @GetMapping(value="/owner/{id}")
+    public Long getOwner(@PathVariable Long id) {
+        try{
+            return this.carService.getOwner(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

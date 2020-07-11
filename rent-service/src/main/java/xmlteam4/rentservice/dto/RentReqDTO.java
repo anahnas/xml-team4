@@ -20,10 +20,12 @@ public class RentReqDTO {
     private Date endDate;
     private RentStatus status;
     private Long carId;
-    private Long cliendId;
+    private Long clientId;
+    private String client;
     private Long bundleId;
     private LocalDateTime created;
     private Long advertiser_id;
+
     // private Long carsForRent;
 
 }

@@ -16,6 +16,7 @@ public class NewAdvertisementDTO {
     private Long carModelId;
     private Long fuelTypeId;
     private Long transmissionId;
+    private Long locationId;
 
     private String imagePath;
 

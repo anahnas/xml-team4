@@ -63,11 +63,6 @@ public class UserController {
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    @GetMapping(value="/findOne/{id}")
-        public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        User retVal = userService.findById(id);
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
-    }
 
     @GetMapping(value="/{id}")
     public UserDTO getUser(@PathVariable("id") Long id) {
@@ -77,7 +72,6 @@ public class UserController {
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setType(user.getRoleType().toString());
-        System.out.println("user - " + userDTO.getUsername());
         return userDTO;
     }
 
@@ -89,7 +83,7 @@ public class UserController {
 
     /////////////////////////////  ADMIN   /////////////////////////////
 
-    @RequestMapping(value = "/addNew", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<?> changeRole(@RequestBody User u) {
         User user = userService.addNewUser(u);
         if(user != null)
