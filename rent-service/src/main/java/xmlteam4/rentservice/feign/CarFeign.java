@@ -1,6 +1,7 @@
 package xmlteam4.rentservice.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import xmlteam4.rentservice.dto.CarDTOBasic;
@@ -17,4 +18,10 @@ public interface CarFeign {
 
     @GetMapping("/car/basic/{id}")
     CarDTOBasic basicCar(@PathVariable Long id);
+
+    @GetMapping(value = "/car/basic/user/{id}")
+    List<CarDTOBasic> getAllCarsByOwner(@PathVariable Long id);
+
+    @GetMapping(value="/car/owner/{id}")
+    Long getOwner(@PathVariable Long id);
 }

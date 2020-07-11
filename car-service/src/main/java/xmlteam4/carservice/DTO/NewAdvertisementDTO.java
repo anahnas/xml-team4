@@ -16,6 +16,7 @@ public class NewAdvertisementDTO {
     private Long carModelId;
     private Long fuelTypeId;
     private Long transmissionId;
+    private Long locationId;
 
     private String imagePath;
 
@@ -33,6 +34,8 @@ public class NewAdvertisementDTO {
     private Double pricePerKm;
 
     private boolean Waiver;
+
+    private Double waiverPricePerDay;
 
     private int availableChildSeats;
 

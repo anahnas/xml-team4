@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xmlteam4.carservice.DTO.TempCarDTO;
-import xmlteam4.carservice.Forms.CarPrettyForm;
 import xmlteam4.carservice.DTO.CarSearchDTO;
+import xmlteam4.carservice.DTO.TempCarDTO;
 import xmlteam4.carservice.model.Car;
 import xmlteam4.carservice.service.CarService;
 
@@ -27,6 +26,7 @@ public class CarController {
         ArrayList<TempCarDTO> retVal = carService.getAllCarDTOs();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
+
 
     @GetMapping(value="/{id}")
     public ResponseEntity<?> getCar(@PathVariable("id") Long id){
@@ -77,6 +77,11 @@ public class CarController {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "basic/user/{id}")
+    public ResponseEntity<?> getAllCarsByOwner(@PathVariable Long id){
+        return new ResponseEntity<>(carService.basicCarsByOwner(id), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/basic/{id}")
     public ResponseEntity<?> basicCar(@PathVariable Long id) {
         return new ResponseEntity<>(carService.basicCar(id), HttpStatus.OK);
@@ -86,10 +91,20 @@ public class CarController {
     public ResponseEntity<?> prettyCars(@RequestParam String ids) {
         return new ResponseEntity<>(carService.prettyCars(ids), HttpStatus.OK);
     }
-    
+
     @GetMapping(value="/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
         return this.carService.getCarImage(id);
+    }
+
+    @GetMapping(value="/owner/{id}")
+    public Long getOwner(@PathVariable Long id) {
+        try{
+            return this.carService.getOwner(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

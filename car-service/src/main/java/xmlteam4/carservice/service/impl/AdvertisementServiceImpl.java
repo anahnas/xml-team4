@@ -2,7 +2,10 @@ package xmlteam4.carservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import xmlteam4.carservice.DTO.*;
+import xmlteam4.carservice.DTO.codebookh.CarModelDTOh;
+import xmlteam4.carservice.DTO.codebookh.CodebookDTOh;
 import xmlteam4.carservice.client.CodebookFeignClient;
 import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.Advertisement;
@@ -13,8 +16,13 @@ import xmlteam4.carservice.repository.ImageRepository;
 import xmlteam4.carservice.service.AdvertisementService;
 import xmlteam4.carservice.service.CarService;
 
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
@@ -34,6 +42,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private ServletContext servletContext;
+
     @Override
     public List<AdvertisementDTO> getAll() {
         List<AdvertisementDTO> advertisementDTOS = new ArrayList<>();
@@ -46,16 +57,20 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public Long newAdvertisement(NewAdvertisementDTO newAdvertisementDTO) {
         Car car = new Car();
 
-        Image image = new Image();
-        image.setPath(newAdvertisementDTO.getImagePath());
-        image = this.imageRepository.save(image);
-
-        // car.setImageId(image.getId());
-       // car.setCarBrandId(newAdvertisementDTO.getCarBrandId());
         car.setCarModelId(newAdvertisementDTO.getCarModelId());
-       // car.setCarClassId(newAdvertisementDTO.getCarClassId());
+
+        CodebookDTOh codebookDTOh = this.codebookFeignClient.getCodebookDTOh();
+        List<CarModelDTOh> carModelDTOhs = codebookDTOh.getCarModelDTOhs();
+        for(CarModelDTOh c : carModelDTOhs){
+            if(c.getId().equals(newAdvertisementDTO.getCarModelId())){
+                car.setCarBrandId(c.getBrandId());
+                car.setCarClassId(c.getClassId());
+            }
+        }
+
         car.setFuelTypeId(newAdvertisementDTO.getFuelTypeId());
         car.setTransmissionId(newAdvertisementDTO.getTransmissionId());
+        car.setLocationId(newAdvertisementDTO.getLocationId());
         car.setKmage(newAdvertisementDTO.getKmage());
         car.setWaiver(newAdvertisementDTO.isWaiver());
         car.setAvailableChildSeats(newAdvertisementDTO.getAvailableChildSeats());
@@ -67,7 +82,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         this.carService.addCar(car);
 
         Advertisement advertisement = new Advertisement();
-
         advertisement.setCar(car);
         advertisement.setAdvertiserId(newAdvertisementDTO.getAdvertiserId());
         advertisement.setStartDate(newAdvertisementDTO.getStartDate());
@@ -129,6 +143,19 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return advertisementDTOS;
 
+    }
+
+    @Override
+    public void uploadImage(MultipartFile image) throws IOException {
+        String pathStr= servletContext.getRealPath(image.getOriginalFilename());
+        System.out.println(pathStr);
+        byte[] bytes = image.getBytes();
+        Files.write(Paths.get(pathStr), bytes);
+        this.carService.setImagePath(pathStr, Objects.requireNonNull(image.getOriginalFilename()));
+    }
+
+    public Advertisement getAdvertisement(Long id){
+        return this.advertisementRepository.getOne(id);
     }
 
     /*private Advertisement DTO2Entity(AdvertisementDTO advertisementDTO) {

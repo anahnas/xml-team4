@@ -38,8 +38,6 @@ public class MessageService {
     public ArrayList<MessageDTO> getMessages(Long receiverId){
         ArrayList<Message> messages = this.messageRepository.findMessageByReceiverId(receiverId);
         ArrayList<MessageDTO> messageDTOs = new ArrayList<>();
-
-
         for(Message message : messages){
             messageDTOs.add(this.message2MessageDTO(message));
         }
@@ -51,7 +49,8 @@ public class MessageService {
     }
 
     public MessageDTO sendMessage(MessageDTO messageDTO, Long senderId){
-
+        System.out.println("Sender: " + senderId);
+        System.out.println("Receiver: " + messageDTO.getReceiver());
         Long receiverId = this.userRepository.findByUsername(messageDTO.getReceiver()).getId();
         if(userCanSend(senderId, receiverId)){
             System.out.println("***MESS SERVICE senderId" + senderId);

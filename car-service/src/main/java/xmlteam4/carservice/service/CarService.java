@@ -34,6 +34,8 @@ public class CarService {
     private CodebookFeignClient codebookFeignClient;
     @Autowired
     private RentFeignClient rentFeignClient;
+    @Autowired
+    private AdvertisementService advertisementService;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -135,6 +137,10 @@ public class CarService {
             e.printStackTrace();
             return false;
         }
+    }
+    public Long getOwner(Long id){
+        Car car = this.carRepository.getOne(id);
+        return car.getOwnerId();
     }
 
     public ArrayList<TempCarDTO> searchCars(CarSearchDTO carSearchDTO) {
@@ -317,6 +323,21 @@ public class CarService {
         return basicCars;
     }
 
+    public List<CarDTOBasic> basicCarsByOwner(Long id) {
+        List<CarDTOBasic> basicCars = new ArrayList<>();
+        try {
+            List<Car> cars = this.carRepository.findAllByOwnerId(id);
+            for (Car car : cars) {
+                basicCars.add(new CarDTOBasic(car));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return basicCars;
+    }
+
+
     public CarDTOBasic basicCar(Long id) {
         CarDTOBasic basicCar = new CarDTOBasic();
 
@@ -363,4 +384,12 @@ public class CarService {
         return cars;
     }
 
+    public void setImagePath(String path, String originalFileName){
+        //getting the car id from uploaded image
+        String advertisementId = originalFileName.split("-")[0];
+        Advertisement advertisement = this.advertisementService.getAdvertisement(Long.valueOf(advertisementId));
+        Car car = this.carRepository.findById(advertisement.getCar().getId()).get();
+        car.setImagePath(path);
+        carRepository.save(car);
+    }
 }

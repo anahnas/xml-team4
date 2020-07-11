@@ -73,7 +73,6 @@ public class Car {
     private String imagePath;
 
     @Column
-
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 
