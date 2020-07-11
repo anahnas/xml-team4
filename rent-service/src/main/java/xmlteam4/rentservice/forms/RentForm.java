@@ -12,12 +12,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class RentForm {
     private Long carId;
-    /*private LocalDateTime startDate;
-    private LocalDateTime endDate;*/
-    private Date startDate;
-    private Date endDate;
-    //private LocalDateTime startDate;
-    //private LocalDateTime endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private Date startDate2;
+    private Date endDate2;
     private Boolean waiver;
     private Long clientId; //dolazice kroz header zakucaj sad u formi clientId, dodacemo samo kasnije
     private Long advertiserId;

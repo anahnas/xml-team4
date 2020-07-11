@@ -30,17 +30,17 @@ public class Rent {
     @Column
     private Long carId;
 
-    /*@Column
+    @Column
     private LocalDateTime startDate;
 
-    /*@Column
-    private LocalDateTime endDate;*/
+    @Column
+    private LocalDateTime endDate;
 
     @Column
-    private Date startDate;
+    private Date startDate2;
 
     @Column
-    private Date endDate;
+    private Date endDate2;
 
     @Column
     private LocalDateTime created;
@@ -86,6 +86,11 @@ public class Rent {
         this.clientId = rentForm.getClientId();
         this.status = RentStatus.PENDING;
         this.advertiserId = rentForm.getAdvertiserId();
+        this.waiver = rentForm.getWaiver();
+        this.priceInitial = DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getPricePerDay();
+        if (this.waiver)
+            this.priceInitial += DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getWaiverPricePerDay();
+        this.pricePenalty = 0D;
     }
 
     public Rent(RentForm rentForm, Long bundleId) {
@@ -96,10 +101,8 @@ public class Rent {
         this.clientId = rentForm.getClientId();
         this.status = RentStatus.PENDING;
         this.advertiserId = rentForm.getAdvertiserId();
-        this.waiver = rentForm.getWaiver();
-        this.priceInitial = DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getPricePerDay();
-        if (this.waiver)
-            this.priceInitial += DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getWaiverPricePerDay();
-        this.pricePenalty = 0D;
+
     }
+
+
 }

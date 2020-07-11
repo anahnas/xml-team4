@@ -72,20 +72,25 @@ public class RentService {
 
             if (!exists)
                 throw new Exception("A car with id:'" + rentForm.getCarId() + "' does not exist.");
+
         }
 
-        // List<Rent> rents = new ArrayList<>();
-        for (Rent rent : rents) {
-            rents.add(rentRepository.save(new Rent(rentForm)));
-            Timer timer = new Timer("Timer");
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    cancelAfter24H();
-                }
-            };
-            timer.schedule(timerTask, DateUtils.addHours(rentForm.getStartDate(), 24));
+            //  List<Rent> rents = new ArrayList<>();
+            for (Rent rent : rents) {
+               // rents.add(rentRepository.save(new Rent(rent)));
+                rentRepository.save(rent);
+                Timer timer = new Timer("Timer");
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        cancelAfter24H();
+                    }
+                };
+                timer.schedule(timerTask, DateUtils.addHours(rent.getStartDate2(), 24));
+
         }
+
+
 
         return rents;
     }
@@ -188,7 +193,7 @@ public class RentService {
                     cancelAfter24H();
                 }
             };
-            timer.schedule(timerTask, DateUtils.addHours(rentForm.getStartDate(), 24));
+            timer.schedule(timerTask, DateUtils.addHours(rent.getStartDate2(), 24));
         }
         bundle.setRentIds(rentIds);
         bundle = bundleService.save(bundle);
@@ -337,8 +342,8 @@ public class RentService {
 
         RentReqDTO rentRequestDto = new RentReqDTO();
         rentRequestDto.setId(request.getId());
-        rentRequestDto.setStartDate(request.getStartDate());
-        rentRequestDto.setEndDate(request.getEndDate());
+        rentRequestDto.setStartDate(request.getStartDate2());
+        rentRequestDto.setEndDate(request.getEndDate2());
         rentRequestDto.setStatus(request.getStatus());
         UserDTO client = this.userFeign.getUserById(request.getClientId());
         rentRequestDto.setCliendId(client.getId());
