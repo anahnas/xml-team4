@@ -92,10 +92,20 @@ public class CarController {
     public ResponseEntity<?> prettyCars(@RequestParam String ids) {
         return new ResponseEntity<>(carService.prettyCars(ids), HttpStatus.OK);
     }
-    
+
     @GetMapping(value="/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getCarImage(@PathVariable("id") Long id) throws IOException {
         return this.carService.getCarImage(id);
+    }
+
+    @GetMapping(value="/owner/{id}")
+    public Long getOwner(@PathVariable Long id) {
+        try{
+            return this.carService.getOwner(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

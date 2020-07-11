@@ -138,6 +138,10 @@ public class CarService {
             return false;
         }
     }
+    public Long getOwner(Long id){
+        Car car = this.carRepository.getOne(id);
+        return car.getOwnerId();
+    }
 
     public ArrayList<TempCarDTO> searchCars(CarSearchDTO carSearchDTO) {
         ArrayList<Car> toRemove = new ArrayList<>();

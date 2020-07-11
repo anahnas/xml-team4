@@ -21,4 +21,7 @@ public interface CarFeign {
 
     @GetMapping(value = "/car/basic/user/{id}")
     List<CarDTOBasic> getAllCarsByOwner(@PathVariable Long id);
+
+    @GetMapping(value="/car/owner/{id}")
+    Long getOwner(@PathVariable Long id);
 }

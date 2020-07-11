@@ -343,7 +343,19 @@ public class RentService {
         List<Rent> rentRequests = this.rentRepository.findByClientId(id);
         List<RentReqDTO> rentRequestDtos = new ArrayList<>();
         for (Rent request : rentRequests) {
-            ENT2DTO(rentRequestDtos, request);
+            RentReqDTO rentReqDTO = new RentReqDTO();
+            rentReqDTO.setId(request.getId());
+            rentReqDTO.setStartDate(Date.from(request.getStartDate().atZone(ZoneId.systemDefault()).toInstant()));
+            rentReqDTO.setEndDate(Date.from(request.getEndDate().atZone(ZoneId.systemDefault()).toInstant()));
+            rentReqDTO.setStatus(request.getStatus());
+            UserDTO client = this.userFeign.getUser(request.getClientId());
+            rentReqDTO.setClientId(client.getId());
+            rentReqDTO.setClient(client.getUsername());
+            rentReqDTO.setCarId(request.getCarId());
+            //rentReqDTO.setAdvertiser_id(this.carFeign.getOwner(request.getCarId()));
+            CarDTOBasic carDTOBasic = this.carFeign.getOneBasic(request.getCarId());
+            rentReqDTO.setAdvertiser_id(carDTOBasic.getId());
+            rentRequestDtos.add(rentReqDTO);
         }
         return rentRequestDtos;
     }
