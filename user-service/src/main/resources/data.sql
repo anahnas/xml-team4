@@ -7,6 +7,10 @@ insert into user_table(dtype, username, password, blocked, is_blocked, can_rate,
 
 insert into user_table(dtype, username, password, blocked) values
 ('ADMIN','admin','admin', 'false');
+insert into user_table(dtype, username, password, blocked) values
+('AGENT','agent','agent', 'false');
+
+
 
 
 insert into message(receiver_id, sender_id, content, date_sent ) values(1, 2, 'Hello, how much is this car?', '2020-06-08 02:00:00');

@@ -21,6 +21,7 @@
             <xs:element name="transmissionId" type="xs:long" minOccurs="0"/>
             <xs:element name="fuelTypeId" type="xs:long" minOccurs="0"/>
             <xs:element name="Waiver" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="WaiverPricePerDay" type="xs:double" minOccurs="0"/>
             <xs:element name="limitedKms" type="xs:boolean" minOccurs="0"/>
             <xs:element name="limitedKmsPerDay" type="xs:double" minOccurs="0"/>
             <xs:element name="kmage" type="xs:double" minOccurs="0"/>

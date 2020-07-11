@@ -13,6 +13,8 @@ public class MessageDTO {
     private String timeSent;
     private String content;
 
+
+
     public MessageDTO() {
     }
 

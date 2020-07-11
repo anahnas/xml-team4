@@ -1,5 +1,10 @@
 package xmlteam4.userservice.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("AGENT")
 public class Agent extends User{
     private String name;
     private String lastName;
