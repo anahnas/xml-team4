@@ -319,6 +319,21 @@ public class CarService {
         return basicCars;
     }
 
+    public List<CarDTOBasic> basicCarsByOwner(Long id) {
+        List<CarDTOBasic> basicCars = new ArrayList<>();
+        try {
+            List<Car> cars = this.carRepository.findAllByOwnerId(id);
+            for (Car car : cars) {
+                basicCars.add(new CarDTOBasic(car));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return basicCars;
+    }
+
+
     public CarDTOBasic basicCar(Long id) {
         CarDTOBasic basicCar = new CarDTOBasic();
 

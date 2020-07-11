@@ -33,6 +33,18 @@ public class RentController {
         }
     }
 
+    @GetMapping(value = "rents/user/{id}")
+    public ResponseEntity<?> getAllForUser(@PathVariable Long id) {
+        try {
+            List<Rent> rents = this.rentService.getAllForUser(id);
+            return new ResponseEntity<>(rents, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(value = "/paid")
     public ResponseEntity<?> getPaid() {
         try {

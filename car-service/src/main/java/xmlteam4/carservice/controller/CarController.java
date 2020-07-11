@@ -28,6 +28,7 @@ public class CarController {
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
+
     @GetMapping(value="/{id}")
     public ResponseEntity<?> getCar(@PathVariable("id") Long id){
         TempCarDTO retVal = carService.getCarDTO(id);
@@ -75,6 +76,11 @@ public class CarController {
     @GetMapping(value = "/basic")
     public ResponseEntity<?> basicCars() {
         return new ResponseEntity<>(carService.basicCars(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "basic/user/{id}")
+    public ResponseEntity<?> getAllCarsByOwner(@PathVariable Long id){
+        return new ResponseEntity<>(carService.basicCarsByOwner(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/basic/{id}")

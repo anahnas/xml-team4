@@ -17,6 +17,7 @@ import xmlteam4.rentservice.model.RentStatus;
 import xmlteam4.rentservice.repository.RentRepository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -39,6 +40,15 @@ public class RentService {
 
     public List<Rent> getAll() {
         return this.rentRepository.findAll();
+    }
+
+    public List<Rent> getAllForUser(Long id) {
+        List<CarDTOBasic> cars = this.carFeign.getAllCarsByOwner(id);
+        List<Rent> rents = new ArrayList<>();
+        for(CarDTOBasic car: cars){
+            rents.addAll(this.rentRepository.findAllByCarId(car.getId()));
+        }
+        return rents;
     }
 
     public Rent getById(Long id) {
@@ -342,11 +352,12 @@ public class RentService {
 
         RentReqDTO rentRequestDto = new RentReqDTO();
         rentRequestDto.setId(request.getId());
-        rentRequestDto.setStartDate(request.getStartDate2());
-        rentRequestDto.setEndDate(request.getEndDate2());
+        rentRequestDto.setStartDate(Date.from(request.getStartDate().atZone(ZoneId.systemDefault()).toInstant()));
+        rentRequestDto.setEndDate(Date.from(request.getEndDate().atZone(ZoneId.systemDefault()).toInstant()));
         rentRequestDto.setStatus(request.getStatus());
-        UserDTO client = this.userFeign.getUserById(request.getClientId());
-        rentRequestDto.setCliendId(client.getId());
+        UserDTO client = this.userFeign.getUser(request.getClientId());
+        rentRequestDto.setClientId(client.getId());
+        rentRequestDto.setClient(client.getUsername());
         rentRequestDtos.add(rentRequestDto);
     }
 
