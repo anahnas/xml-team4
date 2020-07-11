@@ -10,6 +10,8 @@ import xmlteam4.rentservice.forms.RentForm;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -35,7 +37,23 @@ public class Rent {
     private LocalDateTime endDate;
 
     @Column
+    private Date startDate2;
+
+    @Column
+    private Date endDate2;
+
+    @Column
+    private LocalDateTime created;
+
+    /*@Column
+    private Set<Long> carsForRent;*/
+
+
+    @Column
     private Long clientId;
+
+    @Column
+    private Long advertiserId;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -51,6 +69,15 @@ public class Rent {
     private Double pricePenalty;
 
 
+    public Rent(RentForm rentForm) {
+        bundleId = null;
+        this.carId = rentForm.getCarId();
+        this.startDate = rentForm.getStartDate();
+        this.endDate = rentForm.getEndDate();
+        this.clientId = rentForm.getClientId();
+        this.status = RentStatus.PENDING;
+        this.advertiserId = rentForm.getAdvertiserId();
+    }
     public Rent(RentForm rentForm, CarDTOBasic car) {
         bundleId = null;
         this.carId = rentForm.getCarId();
@@ -58,10 +85,24 @@ public class Rent {
         this.endDate = rentForm.getEndDate();
         this.clientId = rentForm.getClientId();
         this.status = RentStatus.PENDING;
+        this.advertiserId = rentForm.getAdvertiserId();
         this.waiver = rentForm.getWaiver();
         this.priceInitial = DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getPricePerDay();
         if (this.waiver)
             this.priceInitial += DAYS.between(rentForm.getStartDate(), rentForm.getEndDate()) * car.getWaiverPricePerDay();
         this.pricePenalty = 0D;
     }
+
+    public Rent(RentForm rentForm, Long bundleId) {
+        this.bundleId = bundleId;
+        this.carId = rentForm.getCarId();
+        this.startDate = rentForm.getStartDate();
+        this.endDate = rentForm.getEndDate();
+        this.clientId = rentForm.getClientId();
+        this.status = RentStatus.PENDING;
+        this.advertiserId = rentForm.getAdvertiserId();
+
+    }
+
+
 }
