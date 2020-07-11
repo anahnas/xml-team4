@@ -56,6 +56,8 @@ public class Car {
     @XmlElement
     private boolean waiver;
     @Column
+    private Double waiverPricePerDay;
+    @Column
     @XmlElement
     private int availableChildSeats;
     @Column
@@ -68,11 +70,9 @@ public class Car {
     @Column
     @XmlElement
     private String imagePath;
-    //private Long imageId;
-    //private Image image;
-    // private List<Image> images;
+
     @Column
-    // @XmlElement
+
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 

@@ -16,6 +16,9 @@ public class RentForm {
     private LocalDateTime endDate;*/
     private Date startDate;
     private Date endDate;
+    //private LocalDateTime startDate;
+    //private LocalDateTime endDate;
+    private Boolean waiver;
     private Long clientId; //dolazice kroz header zakucaj sad u formi clientId, dodacemo samo kasnije
     private Long advertiserId;
 }

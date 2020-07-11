@@ -9,6 +9,7 @@ public class TempCarDTO {
     private Long id;
     private String carModelId;
     private String carBrandId;
+    private Long ownerId;
     private String fuelTypeId;
     private String locationId;
     private String transmissionId;

@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.rentservice.dto.RentReqDTO;
+import xmlteam4.rentservice.dto.RentDateDTO;
 import xmlteam4.rentservice.forms.RentForm;
+import xmlteam4.rentservice.forms.ReviewForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
 import xmlteam4.rentservice.service.RentService;
@@ -38,6 +40,17 @@ public class RentController {
             return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/free")
+    public ResponseEntity<?> getFree(@RequestBody RentDateDTO rentDateDTO) {
+        try {
+            List<Long> freeCarIds = this.rentService.getFreeCarIds(rentDateDTO);
+            return new ResponseEntity<>(freeCarIds, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -82,6 +95,35 @@ public class RentController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value="/notAvailable")
+    public ResponseEntity<?> notAvailable(@RequestBody Rent rent) {
+        Rent r = this.rentService.blockCar(rent);
+        if( r == null )
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/review")
+    public ResponseEntity<?> updateAfterReview(@RequestBody ReviewForm reviewForm) {
+        try {
+            return new ResponseEntity<>(this.rentService.updateAfterReview(reviewForm), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = "/pay/{id}")
+    public ResponseEntity<?> pay(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(this.rentService.pay(id), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

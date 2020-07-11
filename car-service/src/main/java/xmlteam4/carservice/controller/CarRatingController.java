@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xmlteam4.carservice.DTO.CarRatingDTO;
+import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.CarRating;
 import xmlteam4.carservice.model.RatingStatus;
 import xmlteam4.carservice.service.CarRatingService;
@@ -22,6 +23,9 @@ public class CarRatingController {
 
     @Autowired
     private CarRatingService carRatingService;
+
+    @Autowired
+    private UserFeignClient userFeignClient;
 
     @GetMapping
     public ResponseEntity<?> getAll(@RequestHeader ("carId") Long carId) {
@@ -58,7 +62,11 @@ public class CarRatingController {
     }
 
     @PutMapping
-    public ResponseEntity<?> manageComment(@RequestBody CarRating carRating) {
+    public ResponseEntity<?> manageComment(@RequestBody CarRating carRating,
+                                           @RequestHeader ("Authorization") Long userId) {
+
+        this.userFeignClient.checkAuthority(userId);
+
         CarRating carR = this.carRatingService.approveComment(carRating);
         if( carRating == null )
             return new ResponseEntity<>("Comment error!", HttpStatus.BAD_REQUEST);

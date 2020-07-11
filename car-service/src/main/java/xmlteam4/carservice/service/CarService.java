@@ -1,6 +1,5 @@
 package xmlteam4.carservice.service;
 
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.carservice.DTO.*;
@@ -10,11 +9,10 @@ import xmlteam4.carservice.DTO.CodebookDTO;
 import xmlteam4.carservice.DTO.TempCarDTO;
 import xmlteam4.carservice.DTO.CarSearchDTO;
 import xmlteam4.carservice.client.CodebookFeignClient;
+import xmlteam4.carservice.client.RentFeignClient;
 import xmlteam4.carservice.model.*;
-import xmlteam4.carservice.repository.CarCalendarRepository;
 import xmlteam4.carservice.repository.CarRatingRepository;
 import xmlteam4.carservice.repository.CarRepository;
-import xmlteam4.carservice.repository.RentalRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,13 +29,11 @@ public class CarService {
     @Autowired
     private CarRepository carRepository;
     @Autowired
-    private RentalRepository rentalRepository;
-    @Autowired
-    private CarCalendarRepository carCalendarRepository;
-    @Autowired
     private CarRatingRepository carRatingRepository;
     @Autowired
     private CodebookFeignClient codebookFeignClient;
+    @Autowired
+    private RentFeignClient rentFeignClient;
 
     public ArrayList<Car> getAllCars(){
         return this.carRepository.findAll();
@@ -76,6 +72,7 @@ public class CarService {
 
             TempCarDTO tempCarDTO = new TempCarDTO();
             tempCarDTO.setId(car.getId());
+            tempCarDTO.setOwnerId(car.getOwnerId());
             tempCarDTO.setCarBrandId(codebookDTO.getCarBrandDTO().getName());
             tempCarDTO.setCarModelId(codebookDTO.getCarModelDTO().getName());
             tempCarDTO.setLocationId(codebookDTO.getLocationDTO().getName());
@@ -155,7 +152,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
-
+            System.out.println("after location " + allCars.size());
             if(carSearchDTO.getCarModelId() != null){
                 for(Car car: allCars) {
                     if (!car.getCarModelId().equals(carSearchDTO.getCarModelId()))
@@ -164,6 +161,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after getCarModelId " + allCars.size());
 
             if(carSearchDTO.getCarClassId() != null){
                 for(Car car: allCars) {
@@ -173,6 +171,7 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after getCarClassId " + allCars.size());
 
             if(carSearchDTO.getFuelTypeId() != null){
                 for(Car car: allCars) {
@@ -241,28 +240,38 @@ public class CarService {
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after waiver " + allCars.size());
 
             if(carSearchDTO.getStartDate() != null && carSearchDTO.getEndDate() != null){
                 if(!validStartDate(carSearchDTO.getStartDate()))
                     return null;
-                ArrayList<Rental> rentals = (ArrayList<Rental>) this.rentalRepository.findAll();
-                ArrayList<Rental> freeRentals = (ArrayList<Rental>) this.rentalRepository.findFree(carSearchDTO.getStartDate(), carSearchDTO.getEndDate());
-                ArrayList<CarCalendar> carCalendars = new ArrayList<>();
-                for(Rental r : freeRentals){
-                    carCalendars.add(carCalendarRepository.getOne(r.getCarCalendarId()));
+
+                RentDateDTO rentDateDTO = new RentDateDTO();
+
+                rentDateDTO.setStartDate(carSearchDTO.getStartDate().toInstant()
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDateTime());
+
+                rentDateDTO.setEndDate(carSearchDTO.getEndDate().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime());
+
+                ArrayList<Long> carIds = new ArrayList<>();
+                for(Car car: this.carRepository.findAll()){
+                    carIds.add(car.getId());
                 }
-                ArrayList<Car> freeCars = new ArrayList<>();
-                for(CarCalendar carCalendar : carCalendars){
-                    Car car = carRepository.getOne(carCalendar.getCarId());
-                    freeCars.add(car);
-                }
+                rentDateDTO.setCarIds(carIds);
+                ArrayList<Long> freeCarIds = this.rentFeignClient.getFree(rentDateDTO);
+
                 for(Car car : allCars){
-                    if(!freeCars.contains(car))
+                    if(!freeCarIds.contains(car.getId()))
                         toRemove.add(car);
                 }
+
                 allCars.removeAll(toRemove);
                 toRemove = new ArrayList<>();
             }
+            System.out.println("after date " + allCars.size());
 
             ArrayList<TempCarDTO> carDTOs = new ArrayList<>();
 
@@ -281,9 +290,7 @@ public class CarService {
     }
 
     private boolean validStartDate(Date startDate){
-        System.out.println(startDate);
         Date today = new Date();
-        // converting java.util.Date to java.time.LocalDate Date today = new Date();
         Instant instant = Instant.ofEpochMilli(today.getTime());
         LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         LocalDate todayLocal = localDateTime.toLocalDate();
@@ -292,27 +299,8 @@ public class CarService {
         localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         LocalDate startLocal = localDateTime.toLocalDate();
         long days = ChronoUnit.DAYS.between(todayLocal, startLocal);
-        if(days < 2)
-            return false;
-        return true;
+        return days >= 2;
 
-    }
-
-    public Rental blockCar(Rental rental) {
-
-        try {
-            Rental rent = this.rentalRepository.save(rental);
-            CarCalendar carCal = carCalendarRepository.getOne(rental.getCarCalendarId());
-            carCal.getRentalIds().add(rent.getId());
-
-            this.carCalendarRepository.save(carCal);
-
-            return rent;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public List<CarDTOBasic> basicCars() {
@@ -374,4 +362,5 @@ public class CarService {
 
         return cars;
     }
+
 }

@@ -15,9 +15,9 @@ import xmlteam4.userservice.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 
-
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@RequestMapping("user")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
     @Autowired
@@ -56,20 +56,20 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value="/user/findBasic")
+    @GetMapping(value="/findBasic")
     public ResponseEntity<List<User>> getBasicUsers() {
 
         List<User> retVal = userService.findBasicUsers();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    @GetMapping(value="/user/findOne/{id}")
+    @GetMapping(value="/findOne/{id}")
         public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         User retVal = userService.findById(id);
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
-    @GetMapping(value="/getUser/{id}")
+    @GetMapping(value="/{id}")
     public UserDTO getUser(@PathVariable("id") Long id) {
         UserDTO userDTO = new UserDTO();
         User user = this.userService.findById(id);
@@ -77,12 +77,11 @@ public class UserController {
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setType(user.getRoleType().toString());
+        System.out.println("user - " + userDTO.getUsername());
         return userDTO;
     }
 
-
-
-    @GetMapping(value="/user/all")
+    @GetMapping
     public ResponseEntity<?> getAll() {
         List<User> retVal = userService.getAll();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
@@ -117,7 +116,7 @@ public class UserController {
         return new ResponseEntity<>( user, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "deleteUser", method = RequestMethod.DELETE)
+    @DeleteMapping
     public ResponseEntity<?> deleteUser(@RequestBody User u) {
         User user = userService.deleteUser(u);
         if(user == null)
@@ -126,4 +125,10 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/authority/{id}")
+    public ResponseEntity<?> checkAuthority(@PathVariable Long id){
+        User user = this.userService.findById(id);
+        return new ResponseEntity<>(user.getRoleType(), HttpStatus.OK);
+
+    }
 }

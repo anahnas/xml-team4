@@ -14,4 +14,7 @@ public interface CarFeign {
 
     @GetMapping(value = "/car/basic/{id}")
     CarDTOBasic getOneBasic(@PathVariable("id") Long id);
+
+    @GetMapping("/car/basic/{id}")
+    CarDTOBasic basicCar(@PathVariable Long id);
 }
