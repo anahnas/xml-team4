@@ -56,6 +56,7 @@ public class Car {
     @XmlElement
     private boolean waiver;
     @Column
+    @XmlElement
     private Double waiverPricePerDay;
     @Column
     @XmlElement
@@ -72,7 +73,6 @@ public class Car {
     private String imagePath;
 
     @Column
-
     @ElementCollection(targetClass=Long.class)
     private Set<Long> promotionIds;
 

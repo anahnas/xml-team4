@@ -34,6 +34,8 @@ public class NewAdvertisementDTO {
 
     private boolean Waiver;
 
+    private Double waiverPricePerDay;
+
     private int availableChildSeats;
 
     private Double kmage;

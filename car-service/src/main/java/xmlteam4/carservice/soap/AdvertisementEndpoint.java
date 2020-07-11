@@ -45,7 +45,6 @@ public class AdvertisementEndpoint {
         advertisementDTO.setAdvertiserId(adRequest.getAdvertiserId());
         System.out.println("Id lika koji je postavio oglas setovano u AdClient" + adRequest.getAdvertiserId());
 
-
         advertisementDTO.setCarModelId(adRequest.getCar().getCarModelId());
         advertisementDTO.setFuelTypeId(adRequest.getCar().getFuelTypeId());
         advertisementDTO.setTransmissionId(adRequest.getCar().getTransmissionId());
@@ -56,6 +55,7 @@ public class AdvertisementEndpoint {
         advertisementDTO.setPricePerDay(adRequest.getCar().getPricePerDay());
         advertisementDTO.setPricePerKm(adRequest.getCar().getPricePerKm());
         advertisementDTO.setWaiver(adRequest.getCar().isWaiver());
+        advertisementDTO.setWaiverPricePerDay(adRequest.getCar().getWaiverPricePerDay());
         advertisementDTO.setRoleType(" ");
         advertisementDTO.setImagePath(adRequest.getCar().getImagePath());
 
