@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xmlteam4.rentservice.dto.RentReqDTO;
 import xmlteam4.rentservice.forms.RentForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
@@ -80,6 +81,19 @@ public class RentController {
             this.rentService.acceptRentRequest(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping(value = "/client/{id}")
+    public ResponseEntity<List<RentReqDTO>> getClientRentRequests(@PathVariable("id") Long id) {
+        try {
+            List<RentReqDTO> rentRequestDtos = this.rentService.getClientRentRequests(id);
+            return new ResponseEntity<>(rentRequestDtos, HttpStatus.OK);
+        } catch (Exception e) {
+
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

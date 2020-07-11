@@ -9,6 +9,8 @@ import xmlteam4.rentservice.forms.RentForm;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,14 +27,30 @@ public class Rent {
     @Column
     private Long carId;
 
-    @Column
+    /*@Column
     private LocalDateTime startDate;
 
     @Column
-    private LocalDateTime endDate;
+    private LocalDateTime endDate;*/
+
+    @Column
+    private Date startDate;
+
+    @Column
+    private Date endDate;
+
+    @Column
+    private LocalDateTime created;
+
+    /*@Column
+    private Set<Long> carsForRent;*/
+
 
     @Column
     private Long clientId;
+
+    @Column
+    private Long advertiserId;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -46,6 +64,7 @@ public class Rent {
         this.endDate = rentForm.getEndDate();
         this.clientId = rentForm.getClientId();
         this.status = RentStatus.PENDING;
+        this.advertiserId = rentForm.getAdvertiserId();
     }
 
     public Rent(RentForm rentForm, Long bundleId) {
@@ -55,5 +74,6 @@ public class Rent {
         this.endDate = rentForm.getEndDate();
         this.clientId = rentForm.getClientId();
         this.status = RentStatus.PENDING;
+        this.advertiserId = rentForm.getAdvertiserId();
     }
 }

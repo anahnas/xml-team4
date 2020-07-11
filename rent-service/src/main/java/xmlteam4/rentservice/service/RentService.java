@@ -1,19 +1,21 @@
 package xmlteam4.rentservice.service;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xmlteam4.rentservice.dto.CarDTOBasic;
+import xmlteam4.rentservice.dto.RentReqDTO;
+import xmlteam4.rentservice.dto.UserDTO;
 import xmlteam4.rentservice.feign.CarFeign;
+import xmlteam4.rentservice.feign.UserFeign;
 import xmlteam4.rentservice.forms.RentForm;
 import xmlteam4.rentservice.model.Bundle;
 import xmlteam4.rentservice.model.Rent;
 import xmlteam4.rentservice.model.RentStatus;
 import xmlteam4.rentservice.repository.RentRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class RentService {
@@ -25,6 +27,9 @@ public class RentService {
 
     @Autowired
     private CarFeign carFeign;
+
+    @Autowired
+    private UserFeign userFeign;
 
 
     public List<Rent> getAll() {
@@ -63,8 +68,17 @@ public class RentService {
         }
 
         List<Rent> rents = new ArrayList<>();
-        for (RentForm rentForm : rentForms)
+        for (RentForm rentForm : rentForms) {
             rents.add(rentRepository.save(new Rent(rentForm)));
+            Timer timer = new Timer("Timer");
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    cancelAfter24H();
+                }
+            };
+            timer.schedule(timerTask, DateUtils.addHours(rentForm.getStartDate(), 24));
+        }
 
         return rents;
     }
@@ -102,6 +116,14 @@ public class RentService {
         for (RentForm rentForm : rentForms) {
             Rent rent = rentRepository.save(new Rent(rentForm, bundle.getId()));
             rentIds.add(rent.getId());
+            Timer timer = new Timer("Timer");
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    cancelAfter24H();
+                }
+            };
+            timer.schedule(timerTask, DateUtils.addHours(rentForm.getStartDate(), 24));
         }
         bundle.setRentIds(rentIds);
         bundle = bundleService.save(bundle);
@@ -119,6 +141,41 @@ public class RentService {
         rentRequest.setStatus(RentStatus.CANCELED);
         this.rentRepository.save(rentRequest);
     }
+
+
+    public List<RentReqDTO> getClientRentRequests(Long id) {
+        List<Rent> rentRequests = this.rentRepository.findByClientId(id);
+        List<RentReqDTO> rentRequestDtos = new ArrayList<>();
+        for (Rent request : rentRequests) {
+            ENT2DTO(rentRequestDtos, request);
+        }
+        return rentRequestDtos;
+    }
+
+    private void ENT2DTO(List<RentReqDTO> rentRequestDtos, Rent request) {
+
+        RentReqDTO rentRequestDto = new RentReqDTO();
+        rentRequestDto.setId(request.getId());
+        rentRequestDto.setStartDate(request.getStartDate());
+        rentRequestDto.setEndDate(request.getEndDate());
+        rentRequestDto.setStatus(request.getStatus());
+        UserDTO client = this.userFeign.getUserById(request.getClientId());
+        rentRequestDto.setCliendId(client.getId());
+        rentRequestDtos.add(rentRequestDto);
+    }
+
+    public void cancelAfter24H() {
+        Date rentDate = new Date();
+        List<Rent> rents = rentRepository.findAll();
+        for (Rent rent : rents) {
+            if (rent.getEndDate().equals(rentDate) && rent.getStatus().equals(RentStatus.PENDING)) {
+                rent.setStatus(RentStatus.CANCELED);
+                rentRepository.save(rent);
+                break;
+            }
+        }
+    }
+
 
 
 }
