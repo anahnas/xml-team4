@@ -70,11 +70,13 @@ public class RentController {
 
     @PostMapping(value = "/rents")
     public ResponseEntity<?> postRents(@RequestBody List<RentForm> rentForms) {
+        for(RentForm rentForm: rentForms)
+        System.out.println("RENT FORM : " + rentForm.toString());
         try {
             List<Rent> rents = rentService.postRents(rentForms);
             return new ResponseEntity<>(rents, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + "JE LI OVO");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

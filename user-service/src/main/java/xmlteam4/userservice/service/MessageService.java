@@ -35,6 +35,7 @@ public class MessageService {
     private CarFeignClient carFeignClient;
 
 
+
     public ArrayList<MessageDTO> getMessages(Long receiverId){
         ArrayList<Message> messages = this.messageRepository.findMessageByReceiverId(receiverId);
         ArrayList<MessageDTO> messageDTOs = new ArrayList<>();
@@ -49,9 +50,16 @@ public class MessageService {
     }
 
     public MessageDTO sendMessage(MessageDTO messageDTO, Long senderId){
+
         System.out.println("Sender: " + senderId);
         System.out.println("Receiver: " + messageDTO.getReceiver());
         Long receiverId = this.userRepository.findByUsername(messageDTO.getReceiver()).getId();
+        if(receiverId == 5L) {
+            messageDTO.setSender(senderId.toString());
+            sendAgentMessage(messageDTO);
+            System.out.println("MESSAGE SENT TO AGENT");
+            return messageDTO;
+        }
         if(userCanSend(senderId, receiverId)){
             System.out.println("***MESS SERVICE senderId" + senderId);
             Message message = new Message();
@@ -72,14 +80,18 @@ public class MessageService {
             return;
         }
         else {
-
             System.out.println("MESS SERVICE ELSE" + receiverId);
-
             Message message = new Message();
             message.setContent(messageDTO.getContent());
             message.setSenderId(Long.valueOf(messageDTO.getSender()));
             message.setReceiverId(receiverId);
             message.setDateSent(new Date());
+            System.out.println("*** MESSAGE DTO: " + messageDTO.toString());
+            try {
+                message.setSenderUsername((this.userRepository.getOne(Long.valueOf(messageDTO.getSender()))).getUsername());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             System.out.println("MESS SERVICE poruka: " + message.toString());
 
             this.messageRepository.save(message);

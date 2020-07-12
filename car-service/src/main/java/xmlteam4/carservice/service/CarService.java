@@ -77,7 +77,12 @@ public class CarService {
             tempCarDTO.setOwnerId(car.getOwnerId());
             tempCarDTO.setCarBrandId(codebookDTO.getCarBrandDTO().getName());
             tempCarDTO.setCarModelId(codebookDTO.getCarModelDTO().getName());
-            tempCarDTO.setLocationId(codebookDTO.getLocationDTO().getName());
+            if(codebookDTO.getLocationDTO() == null) {
+                tempCarDTO.setLocationId("Novi Sad");
+            } else {
+                tempCarDTO.setLocationId(codebookDTO.getLocationDTO().getName());
+
+            }
             tempCarDTO.setCarClassId(codebookDTO.getCarClassDTO().getCarClass());
             tempCarDTO.setFuelTypeId(codebookDTO.getFuelTypeDTO().getType());
             tempCarDTO.setTransmissionId(codebookDTO.getTransmissionDTO().getType());
@@ -152,6 +157,7 @@ public class CarService {
 
             if(carSearchDTO.getLocationId() != null){
                 for(Car car: allCars) {
+                    if(car.getLocationId()!=null)
                     if (!car.getLocationId().equals(carSearchDTO.getLocationId()))
                         toRemove.add(car);
                 }

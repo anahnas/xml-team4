@@ -18,4 +18,14 @@ public class MessageDTO {
     public MessageDTO() {
     }
 
+    @Override
+    public String toString() {
+        return "MessageDTO{" +
+                "id=" + id +
+                ", receiver='" + receiver + '\'' +
+                ", sender='" + sender + '\'' +
+                ", timeSent='" + timeSent + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
