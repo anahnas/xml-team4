@@ -24,7 +24,7 @@ public class User {
     private RoleTypes roleType;
 
     @Column(nullable = true)
-    private boolean blocked ;
+    private boolean blocked;
 
     //private Set<Authority> authorities;
 

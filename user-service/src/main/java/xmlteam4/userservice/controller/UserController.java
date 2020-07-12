@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xmlteam4.userservice.model.Agent;
 import xmlteam4.userservice.model.BasicUser;
 import xmlteam4.userservice.model.DTO.UserDTO;
 import xmlteam4.userservice.model.Message;
@@ -81,12 +82,18 @@ public class UserController {
     }
 
 
-
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<User> retVal = userService.getAll();
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
+
+    @GetMapping(value="/findAllAgents")
+    public ResponseEntity<?> getAllAgents() {
+        List<Agent> retVal = userService.getAllAgents();
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
 
     /////////////////////////////  ADMIN   /////////////////////////////
 
@@ -105,7 +112,7 @@ public class UserController {
         if(user == null)
             return new ResponseEntity<>("User can't be blocked.", HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>( user, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @RequestMapping(value = "/activateUser", method = RequestMethod.POST)
@@ -114,11 +121,12 @@ public class UserController {
         if(user == null)
             return new ResponseEntity<>( "User can't be activated.", HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>( user, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUser(@RequestBody User u) {
+    public ResponseEntity<?> deleteUser(@RequestBody BasicUser u) {
+        System.out.println("PROSLOO!!!");
         User user = userService.deleteUser(u);
         if(user == null)
             return new ResponseEntity<>("User can't be deleted.",HttpStatus.BAD_REQUEST);

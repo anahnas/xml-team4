@@ -9,6 +9,7 @@ import xmlteam4.carservice.DTO.CarRatingDTO;
 import xmlteam4.carservice.client.UserFeignClient;
 import xmlteam4.carservice.model.CarRating;
 import xmlteam4.carservice.model.RatingStatus;
+import xmlteam4.carservice.model.RoleTypes;
 import xmlteam4.carservice.service.CarRatingService;
 
 import java.util.ArrayList;
@@ -63,9 +64,12 @@ public class CarRatingController {
 
     @PutMapping
     public ResponseEntity<?> manageComment(@RequestBody CarRating carRating,
-                                           @RequestHeader ("Authorization") Long userId) {
+                                           @RequestHeader ("authentication") Long userId) {
 
-        this.userFeignClient.checkAuthority(userId);
+        RoleTypes roleType = this.userFeignClient.checkAuthority(userId);
+
+        if(!roleType.equals(RoleTypes.ADMIN))
+            return new ResponseEntity<>( "You have no authority for this action!", HttpStatus.OK);
 
         CarRating carR = this.carRatingService.approveComment(carRating);
         if( carRating == null )

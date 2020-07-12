@@ -5,11 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import xmlteam4.userservice.model.Admin;
-import xmlteam4.userservice.model.BasicUser;
-import xmlteam4.userservice.model.RoleTypes;
-import xmlteam4.userservice.model.User;
+import xmlteam4.userservice.model.*;
 import xmlteam4.userservice.repository.AdminRepository;
+import xmlteam4.userservice.repository.AgentRepository;
 import xmlteam4.userservice.repository.BasicUserRepository;
 import xmlteam4.userservice.repository.UserRepository;
 import xmlteam4.userservice.service.MessageService;
@@ -18,6 +16,7 @@ import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.List;
 
+import static xmlteam4.userservice.model.RoleTypes.AGENT;
 import static xmlteam4.userservice.model.RoleTypes.BASIC_USER;
 
 
@@ -31,6 +30,8 @@ public class UserService {
     private BasicUserRepository basicUserRepository;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private AgentRepository agentRepository;
 
     /////////////////////  User  //////////////////////
 
@@ -45,9 +46,11 @@ public class UserService {
             System.out.println(u.getUsername() + " nasao   " );
 
             if(u.getPassword().equals(user.getPassword())) {
-                System.out.println(u.getUsername() + " nasao sifru  " );
+               if(u.isBlocked() == false) {
+                   System.out.println(u.getUsername() + " nasao sifru  ");
 
-                return u;
+                   return u;
+               }
             }
         }
 
@@ -79,7 +82,28 @@ public class UserService {
     }
 
     public List<User> getAll() {
-        return this.userRepository.findAll();
+        ArrayList<User> users = this.userRepository.findAll();
+        ArrayList<User> newUsers = new ArrayList<>();
+        for(User u: users) {
+            if(u.getRoleType().equals(BASIC_USER)){
+                newUsers.add(u);
+            }
+        }
+
+        return newUsers;
+    }
+
+    public List<Agent> getAllAgents() {
+        ArrayList<Agent> agents = this.agentRepository.findAll();
+        ArrayList<Agent> newAgents = new ArrayList<>();
+        for(Agent a: agents) {
+            if(a.getRoleType().equals(AGENT)){
+                System.out.println(a);
+                newAgents.add(a);
+            }
+        }
+
+        return newAgents;
     }
 
     public User findById(Long id) {
