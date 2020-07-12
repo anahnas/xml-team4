@@ -79,6 +79,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         car.setLimitKmsPerDay(newAdvertisementDTO.getLimitKmsPerDay());
         car.setLimitedKms(newAdvertisementDTO.isLimitedKms());
         car.setOwnerId(newAdvertisementDTO.getAdvertiserId());
+        if(newAdvertisementDTO.getImagePath() != null)
+            car.setImagePath(newAdvertisementDTO.getImagePath());
+
         this.carService.addCar(car);
 
         Advertisement advertisement = new Advertisement();

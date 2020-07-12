@@ -19,4 +19,18 @@ public class RentForm {
     private Boolean waiver;
     private Long clientId; //dolazice kroz header zakucaj sad u formi clientId, dodacemo samo kasnije
     private Long advertiserId;
+
+    @Override
+    public String toString() {
+        return "RentForm{" +
+                "carId=" + carId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", startDate2=" + startDate2 +
+                ", endDate2=" + endDate2 +
+                ", waiver=" + waiver +
+                ", clientId=" + clientId +
+                ", advertiserId=" + advertiserId +
+                '}';
+    }
 }

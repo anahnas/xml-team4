@@ -33,9 +33,9 @@ public class AdvertisementEndpoint {
     @ResponsePayload
     public AdvertisementResponse newAdvertisement(@RequestPayload AdvertisementRequest adRequest) {
         System.out.println("ULAZI U SOAP KREIRANJE OGLASA");
-        /*System.out.println("AD REQ" + adRequest.getCar().getId() + ", " + adRequest.getCar().getCarModelId() +
+        System.out.println("AD REQ" + adRequest.getCar().getId() + ", " + adRequest.getCar().getCarModelId() +
                 "," + adRequest.getCar().getImagePath() + "," + adRequest.getCar().getOwnerId() + ", " + adRequest.getAdvertiserId()
-        + ", " + adRequest.getCar().getKmage());*/
+        + ", " + adRequest.getCar().getKmage());
         AdvertisementResponse adResponse = new AdvertisementResponse();
         System.out.println("prvi");
 
@@ -60,22 +60,6 @@ public class AdvertisementEndpoint {
         advertisementDTO.setImagePath(adRequest.getCar().getImagePath());
 
 
-        //fali stosta
-
-        //GLUPA SAM VEC U newAdvertisement pravimo auto ups
-       /* Car car = new Car();
-        car.setAvailableChildSeats(adRequest.getCar().getAvailableChildSeats());
-        car.setCarModelId(adRequest.getCar().getCarModelId());
-        car.setFuelTypeId(adRequest.getCar().getFuelTypeId());
-        car.setTransmissionId(adRequest.getCar().getTransmissionId());
-        car.setKmage(adRequest.getCar().getKmage());
-        car.setLimitedKms(adRequest.getCar().isLimitedKms());
-        car.setWaiver(adRequest.getCar().isWaiver());
-        car.setLimitKmsPerDay(adRequest.getCar().getLimitedKmsPerDay());
-        car.setPricePerDay(adRequest.getCar().getPricePerDay());
-        car.setPricePerKm(adRequest.getCar().getPricePerKm());
-
-*/
         Car car = this.carRepository.findTopByOrderByIdDesc();
         Long advertisementId = advertisementService.newAdvertisement(advertisementDTO);
         System.out.println("Koji je ADID? : "+ advertisementId);
